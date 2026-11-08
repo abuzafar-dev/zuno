@@ -1,252 +1,42 @@
-{% extends 'base/base.html' %}
-{% load static %}
+{% extends 'base/cabinet.html' %}
+{% load order_extras %}
+{% block page_title %}Referal{% endblock %}
+{% block heading %}Referal{% endblock %}
+{% block subheading %}Havola orqali ro'yxatdan o'tganlar sizning referallaringiz bo'ladi.{% endblock %}
 
-{% block body %}
-    <style>
-        .referral-container {
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .referral-card {
-            background: white;
-            border-radius: 20px;
-            padding: 32px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
-            border: 1px solid #F3F6EC;
-        }
-
-        .referral-header h3 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 8px;
-        }
-
-        .referral-header p {
-            color: #64748b;
-            font-size: 14px;
-            margin-bottom: 24px;
-        }
-
-        .referral-link-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #F8FAF3;
-            border: 1px solid #E3E8D8;
-            border-radius: 14px;
-            padding: 8px 8px 8px 20px;
-            flex-wrap: wrap;
-        }
-
-        .referral-link-box input {
-            flex: 1;
-            min-width: 200px;
-            border: none;
-            background: transparent;
-            font-size: 14px;
-            color: #334155;
-            outline: none;
-        }
-
-        .btn-copy {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--zuno-lime);
-            color: var(--zuno-ink);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .btn-copy:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(11, 12, 15, 0.17);
-        }
-
-        .btn-copy:active {
-            transform: translateY(0);
-        }
-
-        .copy-feedback {
-            color: #15803D;
-            font-size: 13px;
-            font-weight: 600;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            margin-left: 4px;
-        }
-
-        .copy-feedback.show {
-            opacity: 1;
-        }
-
-        .stats-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--zuno-lime-soft);
-            color: var(--zuno-accent-text);
-            font-weight: 600;
-            font-size: 14px;
-            padding: 10px 20px;
-            border-radius: 30px;
-            margin-top: 20px;
-        }
-
-        .stats-pill i {
-            font-size: 16px;
-        }
-
-        .referral-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            border: 1px solid #F3F6EC;
-            margin-bottom: 10px;
-        }
-
-        .referral-item:hover {
-            background: #F8FAF3;
-            border-color: #E3E8D8;
-        }
-
-        .referral-item span:first-child {
-            font-weight: 600;
-            color: #1e293b;
-        }
-
-        .referral-item span:last-child {
-            color: #64748B;
-            font-size: 13px;
-        }
-
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 50px 20px;
-            color: #64748B;
-            text-align: center;
-        }
-
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 16px;
-            color: #cbd5e1;
-        }
-
-        .empty-state div {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        @media (max-width: 768px) {
-            .referral-card {
-                padding: 20px;
-                border-radius: 16px;
-            }
-
-            .referral-link-box {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 16px;
-            }
-
-            .referral-link-box input {
-                padding: 8px 0;
-            }
-
-            .btn-copy {
-                justify-content: center;
-            }
-        }
-    </style>
-
-    <div class="container market-container" style="margin-top: 40px;">
-        <div class="row">
-            {% include 'base/sidebar.html' %}
-            <div class="col-md-9">
-                <div class="referral-card">
-                    <div class="referral-header">
-                        <h3>Referal havola</h3>
-                        <p>Ushbu havola orqali ro'yxatdan o'tgan foydalanuvchilar sizning referallaringiz bo'ladi.</p>
-                    </div>
-
-                    <div class="referral-link-box">
-                        <input type="text" id="referral-link" value="{{ referral_link }}" readonly>
-                        <button type="button" class="btn-copy" id="copy-ref-btn">
-                            <i class="icofont-copy"></i> Nusxa olish
-                        </button>
-                        <span class="copy-feedback" id="copy-feedback">Nusxalandi!</span>
-                    </div>
-
-                    <div class="stats-pill">
-                        <i class="icofont-users-alt-4"></i>
-                        Jami referallar: {{ referral_count }}
-                    </div>
-                </div>
-
-                <div class="referral-card">
-                    <div class="referral-header">
-                        <h3>Referallar ro'yxati</h3>
-                        <p>Sizning havolangiz orqali ro'yxatdan o'tgan foydalanuvchilar.</p>
-                    </div>
-
-                    {% if referrals %}
-                        {% for ref_user in referrals %}
-                            <div class="referral-item">
-                                <span>{{ ref_user.phone_number }}</span>
-                                <span>{{ ref_user.created_at|date:"d.m.Y" }}</span>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="empty-state">
-                            <i class="icofont-users-alt-4"></i>
-                            <div>Hozircha referallar yo'q.</div>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+{% block content %}
+<section class="ui-card">
+    <header class="ui-card__head"><h2>Sizning havolangiz</h2><span class="ui-badge">{{ referral_count }} referal</span></header>
+    <div class="ui-card__body ui-copy">
+        <input class="zuno-input" type="text" id="referral-link" value="{{ referral_link }}" readonly aria-label="Referal havola">
+        <button type="button" class="zuno-btn zuno-btn--auto" id="copy-ref-btn"><i class="icofont-copy" aria-hidden="true"></i> <span>Nusxa olish</span></button>
     </div>
+</section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const copyBtn = document.getElementById('copy-ref-btn');
-            const linkInput = document.getElementById('referral-link');
-            const feedback = document.getElementById('copy-feedback');
+<section class="ui-card">
+    <header class="ui-card__head"><h2>Referallar</h2></header>
+    {% if referrals %}
+    <div class="ui-table-wrap"><table class="ui-table">
+        <thead><tr><th>Telefon</th><th>Ro'yxatdan o'tgan</th></tr></thead>
+        <tbody>{% for ref_user in referrals %}<tr><td>{{ ref_user.phone_number|format_phone }}</td><td>{{ ref_user.created_at|date:"d.m.Y" }}</td></tr>{% endfor %}</tbody>
+    </table></div>
+    {% include "components/pagination.html" with page=referrals %}
+    {% else %}
+    <div class="ui-empty ui-empty--flat"><i class="icofont-users-alt-4" aria-hidden="true"></i><p>Hozircha referallar yo'q.</p></div>
+    {% endif %}
+</section>
+{% endblock %}
 
-            copyBtn.addEventListener('click', function () {
-                linkInput.select();
-                linkInput.setSelectionRange(0, 99999);
-
-                navigator.clipboard.writeText(linkInput.value).then(function () {
-                    feedback.classList.add('show');
-                    setTimeout(function () {
-                        feedback.classList.remove('show');
-                    }, 2000);
-                }).catch(function () {
-                    document.execCommand('copy');
-                    feedback.classList.add('show');
-                    setTimeout(function () {
-                        feedback.classList.remove('show');
-                    }, 2000);
-                });
-            });
+{% block page_scripts %}
+<script>
+    document.getElementById('copy-ref-btn').addEventListener('click', function () {
+        const input = document.getElementById('referral-link');
+        const label = this.querySelector('span');
+        input.select();
+        navigator.clipboard.writeText(input.value).then(function () {
+            label.textContent = 'Nusxalandi';
+            setTimeout(function () { label.textContent = 'Nusxa olish'; }, 1800);
         });
-    </script>
+    });
+</script>
 {% endblock %}

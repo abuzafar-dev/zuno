@@ -21,7 +21,7 @@ flowchart LR
 | Biznes qoidalari | `apps/services/{orders,wallet,competition}.py` | Ombor, status, komissiya, pul yechish |
 | Ma'lumot | `apps/models.py`, `apps/migrations/` | Sxema, cheklovlar, indekslar |
 | Yordamchi | `apps/utils.py` | Telefon, slug, kirish qiymatlarini tozalash, limit |
-| Interfeys | `templates/`, `apps/apps/brand/` | Shablonlar va yagona brend tokenlari |
+| Interfeys | `templates/`, `apps/apps/brand/` | `zuno.css` tokenlari, `ui.css` komponentlari, `base/cabinet.html` qobig'i |
 
 ## Buyurtma holatlari
 
