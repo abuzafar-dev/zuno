@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+{% load order_extras %}
+{% block title %}Buyurtmani kuzatish — ZUNO{% endblock %}
+
+{% block body %}
+<main class="zuno-page">
+    <h1>Buyurtmani kuzatish</h1>
+    <p class="zuno-page__lead">Buyurtma raqami va buyurtma berilgan telefon raqamini kiriting.</p>
+
+    <div class="zuno-card">
+        {% if error %}<div class="zuno-alert zuno-alert--danger" role="alert">{{ error }}</div>{% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="zuno-field">
+                <label class="zuno-label" for="track-order">Buyurtma raqami</label>
+                <input class="zuno-input" id="track-order" name="order_id" inputmode="numeric" required placeholder="Masalan: 1024" value="{{ request.POST.order_id }}">
+            </div>
+            <div class="zuno-field">
+                <label class="zuno-label" for="order-phone">Telefon raqam</label>
+                <input class="zuno-input" id="order-phone" name="phone_number" type="tel" required placeholder="+998 (90) 123-45-67" value="{{ request.POST.phone_number }}">
+            </div>
+            <button class="zuno-btn" type="submit">Tekshirish</button>
+        </form>
+    </div>
+
+    {% if order %}
+    <section class="zuno-card" aria-live="polite">
+        <div class="zuno-track__head">
+            <h2 style="margin: 0;">Buyurtma #{{ order.id }}</h2>
+            <span class="zuno-track__status">{{ order.get_status_display }}</span>
+        </div>
+        <p class="zuno-track__meta">
+            {{ order.product.title|default:"Mahsulot" }} · {{ order.quantity }} dona ·
+            {{ order.total_price|space_number }} so'm · {{ order.created_at|date:"d.m.Y" }}
+        </p>
+        {% if is_stopped %}
+            <p>Bu buyurtma yakunlangan. Savollar bo'lsa, operatorimizga murojaat qiling.</p>
+        {% else %}
+            <ol class="zuno-steps">
+                {% for step in steps %}<li{% if step.done %} class="is-done"{% endif %}>{{ step.label }}</li>{% endfor %}
+            </ol>
+        {% endif %}
+    </section>
+    {% endif %}
+</main>
+{% endblock %}

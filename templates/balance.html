@@ -1,0 +1,375 @@
+{% extends 'base/base.html' %}
+{% load order_extras %}
+{% load static %}
+
+
+{% block body %}
+    <style>
+        .balance-card {
+            background: var(--zuno-panel);
+            border-radius: 20px;
+            padding: 30px;
+            color: var(--zuno-text);
+            height: 100%;
+            min-height: 200px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(11, 12, 15, 0.12);
+        }
+
+        .balance-card::after {
+            content: "";
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .balance-icon {
+            font-size: 34px;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .balance-card h5 {
+            color: inherit;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            opacity: 0.85;
+            margin-bottom: 10px;
+        }
+
+        .balance-amount {
+            font-size: 36px;
+            font-weight: 800;
+        }
+
+        .withdraw-form-card {
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            height: 100%;
+        }
+
+        .withdraw-form-header {
+            background: var(--zuno-panel);
+            padding: 20px 30px;
+        }
+
+        .withdraw-form-header h5 {
+            color: var(--zuno-text);
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 8px;
+            padding: 20px 30px 0;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1px solid #E3E8D8;
+            border-radius: 12px;
+            background: #F8FAF3;
+            color: #475569;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.2s ease;
+        }
+
+        .tab-button:hover {
+            border-color: var(--zuno-ink);
+            color: var(--zuno-accent-text);
+        }
+
+        .tab-button.active {
+            background: #ffffff;
+            color: #1e293b;
+            border-color: var(--zuno-ink);
+            box-shadow: 0 2px 10px rgba(11, 12, 15, 0.1);
+        }
+
+        .tab-content-panel {
+            padding: 20px 30px 30px;
+        }
+
+        .form-group-modern {
+            margin-bottom: 18px;
+        }
+
+        .form-group-modern label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .form-group-modern .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #E3E8D8;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group-modern .form-control:focus {
+            border-color: var(--zuno-ink);
+            box-shadow: 0 0 0 3px rgba(198, 255, 77, 0.35);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: var(--zuno-lime);
+            color: var(--zuno-ink);
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.2s ease;
+            box-shadow: 0 4px 12px rgba(11, 12, 15, 0.15);
+        }
+
+        .submit-button:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(11, 12, 15, 0.2);
+        }
+
+        .transactions-card {
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            margin-top: 30px;
+        }
+
+        .transactions-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 30px;
+            border-bottom: 1px solid #F3F6EC;
+        }
+
+        .transactions-header h5 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .transactions-count {
+            background: var(--zuno-panel);
+            color: var(--zuno-text);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transactions-table thead th {
+            background: var(--zuno-panel);
+            color: var(--zuno-text);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            padding: 14px 30px;
+            text-align: left;
+        }
+
+        .transactions-table tbody td {
+            padding: 14px 30px;
+            font-size: 14px;
+            color: #334155;
+            border-bottom: 1px solid #F3F6EC;
+        }
+
+        .transactions-table tbody tr:hover {
+            background: #F8FAF3;
+        }
+    </style>
+    <div class="container market-container" style="margin-top: 40px;">
+        <div class="row">
+            {% include 'base/sidebar.html' %}
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="balance-card">
+                            <i class="icofont-wallet balance-icon"></i>
+                            <h5>Mening Hisobim</h5>
+                            <div class="balance-amount">{{ balance|space_number }} so'm</div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="withdraw-form-card">
+                            <div class="withdraw-form-header">
+                                <h5>
+                                    <i class="icofont-money"></i> Pul Yechish
+                                </h5>
+                            </div>
+
+                            <div class="tab-content-panel" id="money-panel">
+                                <form class="payment-form" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group-modern">
+                                        <label>Karta raqami</label>
+                                        <input type="text" name="card_number" class="form-control"
+                                               placeholder="Karta raqamini kiriting" maxlength="16" minlength="15"
+                                               required=""
+                                               id="id_card_number">
+
+                                    </div>
+
+                                    <div class="form-group-modern">
+                                        <label>Summa</label>
+                                        <input type="number" name="amount" class="form-control"
+                                               placeholder="Miqdorini kiriting"
+                                               required="" id="id_amount">
+
+                                    </div>
+
+                                    <button type="submit" class="submit-button submit-btn">
+                                        <i class="icofont-check"></i> Tasdiqlash
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if transactions %}
+                <div class="transactions-card" style="margin-bottom: 20px;">
+                    <div class="transactions-header">
+                        <h5><i class="icofont-money"></i> <span>Daromad tarixi</span></h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead><tr><th>Sana</th><th>Turi</th><th>Buyurtma</th><th>Summa</th></tr></thead>
+                            <tbody>
+                            {% for t in transactions %}
+                                <tr>
+                                    <td>{{ t.created_at|date:"d.m.Y H:i" }}</td>
+                                    <td>{{ t.get_kind_display }}</td>
+                                    <td>{% if t.order_id %}#{{ t.order_id }}{% else %}—{% endif %}</td>
+                                    <td>{{ t.amount|space_number }} so'm</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="transactions-card">
+                    <div class="transactions-header">
+                        <h5>
+                            <i class="icofont-history"></i>
+                            <span>O'tkazmalar Tarixi</span>
+                        </h5>
+                        <span class="transactions-count">{{ withdrawals.paginator.count }} ta</span>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="transactions-table">
+                            <thead>
+                            <tr>
+                                <th>Sana</th>
+                                <th>Hisob raqam</th>
+                                <th>Summa</th>
+                                <th>Holat</th>
+                                <th>Xabar</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for w in withdrawals %}
+                                <tr>
+                                    <td>{{ w.created_at|date:"d.m.Y H:i" }}</td>
+                                    <td>{{ w.card_number }}</td>
+                                    <td>{{ w.amount|space_number }} so'm</td>
+                                    <td>{{ w.get_status_display }}</td>
+                                    <td>{{ w.message|default:"—" }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 40px; color: #64748b;">
+                                        <i class="icofont-history"
+                                           style="font-size: 48px; display: block; margin-bottom: 16px;"></i>
+                                        <strong>Hozircha pul yechish so'rovlari mavjud emas</strong>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function switchTab(tab) {
+            const moneyTab = document.getElementById('money-tab');
+            const coinTab = document.getElementById('coin-tab');
+            const moneyPanel = document.getElementById('money-panel');
+            const coinPanel = document.getElementById('coin-panel');
+
+            if (tab === 'money') {
+                moneyTab.classList.add('active');
+                coinTab.classList.remove('active');
+                moneyPanel.style.display = 'block';
+                coinPanel.style.display = 'none';
+            } else {
+                coinTab.classList.add('active');
+                moneyTab.classList.remove('active');
+                coinPanel.style.display = 'block';
+                moneyPanel.style.display = 'none';
+            }
+        }
+    </script>
+{% endblock %}

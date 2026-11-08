@@ -1,0 +1,362 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#FFFFFF">
+    <link rel="icon" href="{% static 'apps/brand/favicon.ico' %}" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="{% static 'apps/brand/zuno-app-icon.svg' %}">
+    <link rel="stylesheet" href="{% static 'apps/brand/zuno.css' %}">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Yangi buyurtmalar — ZUNO</title>
+
+    <!-- ======================================================================
+         Yangi buyurtmalar
+         Uslub va skript: apps/brand/operator.css, operator.js. Ma'lumotlar bazadan
+         keladi (context: orders, regions, new_orders_count, my_orders_count).
+         ====================================================================== -->
+
+    <link rel="stylesheet" href="{% static 'apps/brand/operator.css' %}">
+</head>
+<body class="op-body">
+
+<!-- ====================== IKONKALAR TO'PLAMI ====================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+        <symbol id="i-inbox" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+            <path d="M5.5 5h13l3.5 7v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/>
+        </symbol>
+        <symbol id="i-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 3h6a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
+            <path d="M16 5h1a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h1"/>
+            <path d="m9 14 2 2 4-4"/>
+        </symbol>
+        <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>
+        </symbol>
+        <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+        </symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+        </symbol>
+        <symbol id="i-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+        </symbol>
+        <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.3 7 12 12 20.7 7"/>
+            <line x1="12" y1="22" x2="12" y2="12"/>
+        </symbol>
+        <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/>
+            <polyline points="22 4 12 14.1 9 11.1"/>
+        </symbol>
+        <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.7" y2="16.7"/>
+        </symbol>
+        <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/>
+            <polyline points="1 20 1 14 7 14"/>
+            <path d="M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15"/>
+        </symbol>
+        <symbol id="i-hand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 11V6.5a1.5 1.5 0 0 1 3 0V11"/>
+            <path d="M11 10.5V4.8a1.5 1.5 0 0 1 3 0V11"/>
+            <path d="M14 10.8V6.3a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-5.2-3l-2-3.5a1.5 1.5 0 0 1 2.4-1.7L8 15"/>
+        </symbol>
+        <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </symbol>
+        <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+        </symbol>
+        <symbol id="i-map" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+        </symbol>
+        <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+        </symbol>
+        <symbol id="i-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v5h5"/>
+            <path d="M3.5 15a9 9 0 1 0 .5-6.5L3 8"/>
+            <polyline points="12 7 12 12 15.5 14"/>
+        </symbol>
+        <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+        </symbol>
+        <symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/>
+            <polyline points="7 3 7 8 15 8"/>
+        </symbol>
+        <symbol id="i-skip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 4 15 12 5 20 5 4"/>
+            <line x1="19" y1="5" x2="19" y2="19"/>
+        </symbol>
+        <symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4z"/>
+        </symbol>
+        <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+        </symbol>
+    </defs>
+</svg>
+
+<div class="op-shell">
+
+<aside class="op-sidebar">
+    <div class="op-brand">
+        <span class="op-brand-mark"><img src="{% static 'apps/brand/zuno-symbol.svg' %}" alt="" width="22" height="18"></span>
+        <div class="op-brand-text">
+            <b>ZUNO</b>
+            <span>Operator paneli</span>
+        </div>
+    </div>
+
+    <div class="op-me">
+        <div class="op-me-avatar" title="{{ request.user.first_name }} {{ request.user.last_name }}">{% if request.user.first_name %}{{ request.user.first_name|slice:":1"|upper }}{{ request.user.last_name|slice:":1"|upper }}{% else %}{{ request.user.phone_number|slice:"-2:" }}{% endif %}</div>
+        <div class="op-me-info">
+            <b>{% if request.user.first_name or request.user.last_name %}{{ request.user.first_name }} {{ request.user.last_name }}{% else %}{{ request.user.phone_number }}{% endif %}</b>
+            <span><i class="op-dot"></i><em data-op-status-text style="font-style:normal">Onlayn</em></span>
+        </div>
+    </div>
+
+    <nav class="op-nav">
+        <div class="op-nav-title">Ish maydoni</div>
+
+        <a href="{% url 'new-orders' %}" class="is-active">
+            <svg><use href="#i-hand"/></svg>
+            Yangi buyurtmalar
+            <span class="op-nav-count{% if new_orders_count > 0 %} is-hot{% endif %}">{{ new_orders_count }}</span>
+        </a>
+
+        <a href="{% url 'my-orders' %}" class="">
+            <svg><use href="#i-inbox"/></svg>
+            Buyurtmalarim
+            <span class="op-nav-count" data-op-my-count>{{ my_orders_count }}</span>
+        </a>
+    </nav>
+
+    <div class="op-sidebar-foot">
+        <a href="#" onclick="document.getElementById('logout-form').submit(); return false;" class="op-logout">
+            <svg><use href="#i-logout"/></svg>
+            Chiqish
+        </a>
+    </div>
+</aside>
+<div class="op-sidebar-backdrop"></div>
+
+    <div class="op-main">
+
+        <header class="op-topbar">
+            <button type="button" class="op-burger" data-op-burger aria-label="Menyu">
+                <svg><use href="#i-menu"/></svg>
+            </button>
+
+            <div class="op-page-title">
+                <h1>Yangi buyurtmalar</h1>
+                <p>Buyurtmani o'zingizga oling - u "Buyurtmalarim"ga o'tadi</p>
+            </div>
+
+            <div class="op-topbar-right">
+                <div class="op-clock">
+                    <svg><use href="#i-clock"/></svg>
+                    <span data-op-clock>00:00:00</span>
+                </div>
+                <button type="button" class="op-switch" data-op-switch>
+                    <span class="op-switch-track"></span>
+                    <span class="op-switch-text">Ish rejimi</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="op-content">
+    <!-- ---------- Tepadagi chaqiruv paneli ---------- -->
+    <section class="op-pool-hero">
+        <span class="op-pool-hero-icon"><svg><use href="#i-hand"/></svg></span>
+
+        <div class="op-pool-hero-text">
+            <h2>Navbatda <span data-op-count>{{ new_orders_count }}</span> ta yangi buyurtma bor</h2>
+            <p>Olingan buyurtma ro'yxatdan chiqadi va "Buyurtmalarim" sahifasida ochiladi.</p>
+        </div>
+
+        <div class="op-pool-hero-actions">
+            <button type="button" class="btn btn-white" data-op-take-next>
+                <svg><use href="#i-check"/></svg>
+                Keyingi buyurtmani olish
+            </button>
+        </div>
+    </section>
+
+    <!-- ---------- Navbat jadvali ------------>
+    <section class="op-card" data-op-pool data-op-table data-op-per-page="8">
+
+        <div class="op-toolbar">
+            <div class="op-search">
+                <svg><use href="#i-search"/></svg>
+                <input type="search" placeholder="Mijoz ismi, telefon yoki buyurtma raqami..."
+                       data-op-search aria-label="Qidirish">
+                <kbd>/</kbd>
+            </div>
+
+            <select class="op-select" data-op-filter="region" aria-label="Viloyat">
+                <option value="all">Barcha viloyatlar</option>
+                {% for region in regions %}
+                <option value="{{ region.id }}">{{ region.title }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="button" class="btn btn-ghost btn-sm" onclick="location.reload()">
+                <svg><use href="#i-refresh"/></svg>
+                Yangilash
+            </button>
+        </div>
+
+        <div class="op-table-wrap">
+            <table class="op-table">
+                <thead>
+                <tr>
+                    <th data-sort="num">ID</th>
+                    <th data-sort="date">Sana</th>
+                    <th data-sort="text">Mijoz</th>
+                    <th data-sort="text">Mahsulot</th>
+                    <th data-sort="text">Viloyat</th>
+                    <th data-sort="num">Soni</th>
+                    <th data-sort="num">Summa</th>
+                    <th>Amallar</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for order in orders %}
+                <tr data-status="new"
+                    data-region="{{ order.region_id|default:'' }}"
+                    data-order="#{{ order.id }}"
+                    data-customer="{{ order.full_name }}"
+                    data-search="{{ order.phone_number }}">
+                    <td class="cell-id" data-value="{{ order.id }}">#{{ order.id }}</td>
+                    <td class="cell-muted num" data-value="{{ order.created_at|date:'YmdHis' }}" title="{{ order.created_at|date:'d.m.Y H:i:s' }}">
+                        {{ order.created_at|date:"d.m.Y H:i" }}
+                        <span class="cell-sub">{{ order.created_at|timesince }} oldin</span>
+                    </td>
+                    <td>
+                        <span class="cell-strong">{{ order.full_name }}</span>
+                        <span class="cell-sub num" data-op-phone>{{ order.phone_number }}</span>
+                    </td>
+                    <td>
+                        <span class="cell-clip" title="{% if order.product %}{{ order.product.title }}{% else %}Mahsulot o'chirilgan{% endif %}">{% if order.product %}{{ order.product.title }}{% else %}Mahsulot o'chirilgan{% endif %}</span>
+                        {% if order.product and order.product.category %}
+                        <span class="cell-sub">{{ order.product.category.title }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{% if order.region %}{{ order.region.title }}{% else %}-{% endif %}</td>
+                    <td class="num">{{ order.quantity }}</td>
+                    <td class="num cell-strong" data-value="{{ order.total_price|floatformat:'0' }}" data-op-money>{{ order.total_price|floatformat:"0" }}</td>
+                    <td>
+                        <div class="cell-actions">
+                            <button type="button" class="btn btn-primary btn-sm" data-op-take
+                                    data-take-url="{% url 'order-take' order_id=order.id %}">
+                                <svg><use href="#i-hand"/></svg>
+                                O'zimga olish
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+
+                <!-- Ro'yxat bo'shaganda yoki filtrga hech narsa mos kelmaganda ko'rinadi -->
+                <tr class="op-no-result">
+                    <td colspan="8" class="op-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.7" y2="16.7"/>
+                        </svg>
+                        <strong>Navbatda buyurtma yo'q</strong>
+                        Filtrni o'zgartiring yoki "Yangilash" tugmasini bosing
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="op-pagination">
+            <span class="op-pagination-info" data-op-page-info></span>
+            <div class="op-pages" data-op-pages></div>
+        </div>
+    </section>
+
+    <!-- ---------- Qisqacha eslatma ---------- -->
+    <div class="op-note">
+        <svg><use href="#i-info"/></svg>
+        <div>
+            <b>Qanday ishlaydi</b>
+            <ul>
+                <li>Buyurtmani olganingizdan keyin u shu ro'yxatdan chiqadi va boshqa operatorlarga
+                    ko'rinmaydi.
+                </li>
+                <li>Olingan buyurtma <a href="{% url 'my-orders' %}"><b>Buyurtmalarim</b></a> sahifasida "Yangi" holatida
+                    turadi.
+                </li>
+                <li>Ro'yxat o'zi yangilanmaydi - yangi buyurtmalarni ko'rish uchun "Yangilash" tugmasini
+                    bosing.
+                </li>
+            </ul>
+        </div>
+    </div>
+        </main>
+    </div>
+</div>
+
+
+
+<div class="op-toasts"></div>
+{% for m in messages %}<template data-flash="{{ m.level_tag }}">{{ m }}</template>{% endfor %}
+
+<script src="{% static 'apps/brand/operator.js' %}"></script>
+
+
+<form id="logout-form" action="{% url 'logout' %}" method="post" hidden>{% csrf_token %}</form>
+</body>
+</html>

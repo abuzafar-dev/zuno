@@ -1,0 +1,949 @@
+{% load static order_extras %}
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <link rel="stylesheet" href="{% static 'apps/icofont.min.css' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}ZUNO — Internet do'kon, O'zbekiston bo'ylab yetkazib berish{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}ZUNO — O'zbekiston bo'ylab yetkazib beriladigan onlayn do'kon: kategoriyalar, qulay qidiruv va ro'yxatdan o'tmasdan buyurtma berish.{% endblock %}">
+    <meta name="theme-color" content="#FFFFFF">
+    <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+
+    <!-- Open Graph / ijtimoiy tarmoqlar -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ZUNO">
+    <meta property="og:title" content="{% block og_title %}ZUNO — Internet do'kon{% endblock %}">
+    <meta property="og:description" content="O'zbekiston bo'ylab yetkazib beriladigan onlayn do'kon.">
+    <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'apps/brand/zuno-og.png' %}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Favicon va ilova ikonkalari -->
+    <link rel="icon" href="{% static 'apps/brand/favicon.ico' %}" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="{% static 'apps/brand/zuno-app-icon.svg' %}">
+    <link rel="apple-touch-icon" href="{% static 'apps/brand/apple-touch-icon.png' %}">
+    <link rel="manifest" href="{% static 'apps/brand/site.webmanifest' %}">
+
+    <script type="application/ld+json">
+    {"@context": "https://schema.org", "@type": "Organization", "name": "ZUNO",
+     "url": "{{ request.scheme }}://{{ request.get_host }}/",
+     "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'apps/brand/icon-512.png' %}"}
+    </script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'apps/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Font Awesome & Icons -->
+
+    <!-- Owl Carousel -->
+
+    <!-- Inter font -->
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'apps/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'apps/index_style.css' %}">
+    <!-- ZUNO brend tokenlari -->
+    <link rel="stylesheet" href="{% static 'apps/brand/zuno.css' %}">
+
+    <!-- Modern UI Styles -->
+    <style>
+        :root {
+            /* Eski nomlar saqlangan — qiymatlar ZUNO tokenlariga bog'langan (apps/brand/zuno.css) */
+            --primary-color: var(--zuno-ink);
+            --primary-dark: var(--zuno-accent-text);
+            --primary-light: var(--zuno-lime);
+            --primary-soft: var(--zuno-lime-soft);
+            --success-color: var(--zuno-success);
+            --warning-color: var(--zuno-warning);
+            --danger-color: var(--zuno-danger);
+            --info-color: var(--zuno-info);
+            --dark-bg: var(--zuno-ink-2);
+            --light-bg: var(--zuno-surface);
+            --text-color: var(--zuno-text);
+            --muted-color: var(--zuno-muted);
+            --border-color: var(--zuno-border);
+            --card-shadow: var(--zuno-shadow);
+            --card-shadow-hover: 0 8px 24px rgba(11, 12, 15, 0.08);
+        }
+
+        a, .btn, .card, .category-card, .product-card, .form-control, .form-select,
+        .nav-link-modern, .dropdown-item-modern, .mega-list-modern a {
+            transition: all 0.2s ease;
+        }
+
+        .category-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #fff;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .category-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--card-shadow-hover);
+            color: var(--primary-color);
+        }
+
+        .category-image-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .category-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .category-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .product-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .product-image-wrapper {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background: #f9fafb;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.04);
+            transition: transform 0.3s ease;
+        }
+
+        .product-info {
+            padding: 16px;
+        }
+
+        .product-title a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .product-title a:hover {
+            color: var(--primary-color);
+        }
+
+        .product-price {
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
+        a {
+            color: var(--primary-color);
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: var(--primary-dark);
+        }
+
+        body {
+            font-family: var(--zuno-font);
+            background: #fff;
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--zuno-text);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .container {
+            max-width: 1280px;
+        }
+
+        .card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .btn {
+            border-radius: 8px;
+            padding: 10px 22px;
+            font-weight: 600;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--zuno-lime);
+            color: var(--zuno-ink);
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background: var(--zuno-lime-hover);
+            color: var(--zuno-ink);
+        }
+
+        .btn-primary:not(:disabled):not(.disabled):active {
+            background: var(--zuno-lime-active);
+            color: var(--zuno-ink);
+        }
+
+        .btn-primary:disabled, .btn-primary.disabled {
+            background: var(--zuno-border);
+            color: var(--zuno-muted);
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            padding: 10px 14px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--zuno-ink);
+            box-shadow: 0 0 0 3px var(--zuno-lime-soft);
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .table {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table thead {
+            background: #f9fafb;
+            color: #374151;
+        }
+
+        .table thead th {
+            border-bottom: 2px solid var(--border-color);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .table-hover tbody tr:hover {
+            background: var(--primary-soft);
+        }
+
+        .modern-header {
+            background: var(--zuno-panel);
+            border-bottom: 1px solid var(--zuno-border-dark);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .modern-navbar {
+            padding: 0;
+        }
+
+        .navbar-brand-modern {
+            flex: none;
+            display: inline-flex;
+            align-items: center;
+            padding: 16px 0;
+            margin-right: 24px;
+        }
+
+        @media (max-width: 991.98px) {
+            .modern-navbar > .container {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+        }
+
+        .nav-link-modern {
+            padding: 20px 16px !important;
+            font-weight: 600;
+            color: var(--zuno-text-on-dark-muted) !important;
+            position: relative;
+        }
+
+        .nav-item.dropdown.mega-menu {
+            position: static;
+        }
+
+        .nav-item.dropdown.profile-dropdown-nav {
+            position: relative;
+        }
+
+        .nav-link-modern::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--zuno-lime);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link-modern:hover,
+        .nav-link-modern.active {
+            color: var(--zuno-text-on-dark) !important;
+        }
+
+        .nav-link-modern:hover::after,
+        .nav-link-modern.active::after {
+            width: 80%;
+        }
+
+        .search-box-header {
+            position: relative;
+            width: 400px;
+            max-width: 100%;
+        }
+
+        .search-box-header input {
+            width: 100%;
+            padding: 9px 45px 9px 18px;
+            border: 1px solid var(--zuno-border-dark);
+            border-radius: 8px;
+            background: var(--zuno-panel-2);
+            color: var(--zuno-text-on-dark);
+        }
+
+        .search-box-header input::placeholder {
+            color: var(--zuno-text-on-dark-muted);
+        }
+
+        .search-box-header input:focus {
+            border-color: var(--zuno-lime);
+            box-shadow: 0 0 0 3px rgba(198, 255, 77, 0.2);
+            outline: none;
+        }
+
+        .search-box-header button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--zuno-lime);
+            border: none;
+            color: var(--zuno-ink);
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-dropdown-modern {
+            border-radius: 16px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+            border: none !important;
+            padding: 8px 0;
+            margin-top: 10px;
+            min-width: 250px;
+            right: 0 !important;
+            left: auto !important;
+        }
+
+        .dropdown-item-modern {
+            padding: 12px 24px;
+            font-weight: 500;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dropdown-item-modern i {
+            width: 20px;
+            font-size: 18px;
+            color: var(--zuno-accent-text);
+        }
+
+        .dropdown-item-modern:hover {
+            background: var(--zuno-lime-soft);
+            color: var(--zuno-text);
+        }
+
+        .profile-pic-modern {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid var(--zuno-lime);
+            object-fit: cover;
+        }
+
+        .mega-dropdown-modern {
+            border-radius: 16px !important;
+            border: none !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+            padding: 30px 20px !important;
+            margin-top: 10px !important;
+            width: 90% !important;
+            max-width: 1200px !important;
+            left: 5% !important;
+            right: 5% !important;
+        }
+
+        .mega-list-modern {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .mega-list-modern a {
+            padding: 8px 12px;
+            color: #475569;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 13px;
+            white-space: nowrap;
+            display: block;
+        }
+
+        .mega-list-modern a:hover {
+            background: var(--zuno-lime-soft);
+            color: var(--zuno-text);
+            transform: translateX(4px);
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        .navbar-toggler-modern {
+            border: 1px solid var(--zuno-border-dark);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .navbar-toggler-modern .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='%231A1F16' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        .modern-footer {
+            background: var(--zuno-panel);
+            border-top: 1px solid var(--zuno-border-dark);
+            padding: 0;
+            margin-top: 60px;
+        }
+
+        .footer-copyright {
+            padding: 28px 0;
+            color: var(--zuno-text-on-dark-muted);
+        }
+
+        .copyright-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .copyright-text {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .copyright-text {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .copyright-text a {
+            display: inline-flex;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--zuno-text-on-dark-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: var(--zuno-accent-text);
+        }
+
+        /* 992–1199px: menyu yorliqlari bir qatorda qolsin */
+        @media (min-width: 992px) and (max-width: 1199.98px) {
+            .nav-link-modern {
+                padding: 20px 10px !important;
+                white-space: nowrap;
+            }
+
+            .search-box-header {
+                width: 260px;
+            }
+
+            .navbar-brand-modern {
+                margin-right: 12px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .search-box-header {
+                width: 100%;
+                margin: 16px 0;
+            }
+
+            .nav-link-modern {
+                padding: 12px 16px !important;
+            }
+
+            .nav-link-modern::after {
+                display: none;
+            }
+
+            .mega-dropdown-modern {
+                min-width: 100% !important;
+                left: 0 !important;
+                transform: none !important;
+                padding: 16px !important;
+                max-height: 400px;
+                overflow-y: auto;
+            }
+
+            .mega-dropdown-modern .row {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .card {
+                margin-bottom: 20px;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .table {
+                font-size: 12px;
+            }
+
+            .modern-footer {
+                margin-top: 40px;
+            }
+
+            .footer-copyright {
+                padding: 20px 0;
+            }
+
+            .copyright-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+            }
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .app-toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 280px;
+            max-width: 380px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            animation: toast-in 0.3s ease forwards;
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        }
+
+        .toast-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .toast-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .toast-info {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .toast-icon {
+            font-size: 16px;
+            font-weight: 700;
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+        }
+
+        .toast-text {
+            flex: 1;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: 0.8;
+            padding: 0;
+        }
+
+        .toast-close:hover {
+            opacity: 1;
+        }
+
+        @keyframes toast-in {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes toast-out {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+        }
+
+        .app-toast.toast-hide {
+            animation: toast-out 0.3s ease forwards;
+        }
+
+        @media (max-width: 480px) {
+            .toast-container {
+                left: 12px;
+                right: 12px;
+                top: 12px;
+            }
+
+            .app-toast {
+                max-width: 100%;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+{% with toast_msgs=messages|untagged:"login_modal,register_modal,password_form,order_form" %}
+{% if toast_msgs %}
+    <div class="toast-container" role="status" aria-live="polite">
+        {% for message in toast_msgs %}
+            <div class="app-toast zuno-toast {% if 'danger' in message.tags %}toast-danger{% elif 'success' in message.tags %}toast-success{% elif 'warning' in message.tags %}toast-warning{% else %}toast-info{% endif %}">
+                <span class="toast-icon">
+                    {% if 'danger' in message.tags %}✕{% elif 'success' in message.tags %}
+                        ✓{% elif 'warning' in message.tags %}!{% else %}i{% endif %}
+                </span>
+                <span class="toast-text">{{ message }}</span>
+                <button type="button" class="toast-close" aria-label="Yopish" onclick="this.closest('.app-toast').remove()">&times;</button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endwith %}
+
+<div class="modern-header">
+    <nav class="navbar navbar-expand-lg navbar-light modern-navbar">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-modern" href="/" aria-label="ZUNO — bosh sahifa">
+                {% include "components/logo.html" with on="light" height=30 %}
+            </a>
+
+            <button class="navbar-toggler navbar-toggler-modern" type="button" data-toggle="collapse"
+                    data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
+                    aria-label="Menyuni ochish">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-modern{% if request.path == '/' %} active{% endif %}" href="/"{% if request.path == '/' %} aria-current="page"{% endif %}>
+                            <i class="icofont-ui-home"></i> Bosh sahifa
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown mega-menu">
+                        <a class="nav-link nav-link-modern dropdown-toggle" href="#" data-toggle="dropdown">
+                            <i class="icofont-list"></i> Kategoriyalar
+                        </a>
+                        <div class="dropdown-menu mega-dropdown-modern">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    <div class="mega-list-modern">
+                                        {% for category in categories %}
+                                            <a href="/category/{{ category.slug }}">{{ category.title }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-modern{% if '/category' in request.path or '/product-detail' in request.path %} active{% endif %}" href="/category"{% if request.path == '/category/' %} aria-current="page"{% endif %}>
+                            <i class="icofont-shopping-cart"></i> Do'kon
+                        </a>
+                    </li>
+                </ul>
+
+                <form action="{% url 'search_product' %}" method="get" class="search-box-header" autocomplete="off" role="search">
+                    <label for="search-input" class="sr-only">Mahsulot qidirish</label><input id="search-input" name="product" type="search" placeholder="Mahsulot qidirish..." value="{{ query|default:'' }}" required/>
+                    <button type="submit" aria-label="Qidirish">
+                        <i class="icofont-search-1"></i>
+                    </button>
+                </form>
+
+                <ul class="navbar-nav ml-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown profile-dropdown-nav">
+                            <a class="nav-link nav-link-modern dropdown-toggle" href="#" data-toggle="dropdown">
+                                <img src="{% static 'apps/icons8-profile-94.png' %}" class="profile-pic-modern"
+                                     width="32" height="32" alt="profile">
+                                <span class="ml-2">{{ user.phone_number }}</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right profile-dropdown-modern">
+                                <a class="dropdown-item dropdown-item-modern" href="/admin_page">
+                                    <i class="icofont-ui-user"></i>
+                                    <span>Mening kabinetim</span>
+                                </a>
+                                <div class="dropdown-divider" style="margin: 8px 0;"></div>
+                                <a class="dropdown-item dropdown-item-modern" href="#" onclick="document.getElementById('logout-form').submit(); return false;">
+                                    <i class="icofont-logout"></i>
+                                    <span>Chiqish</span>
+                                </a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a href="#" data-target="#login" data-toggle="modal" class="nav-link nav-link-modern">
+                                <i class="icofont-ui-user"></i> Kirish
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<!-- Kirish / ro'yxatdan o'tish oynasi -->
+{% with login_msgs=messages|tagged:"login_modal" reg_msgs=messages|tagged:"register_modal" %}
+<div class="modal fade zuno-auth-modal" id="login" tabindex="-1" role="dialog" aria-labelledby="auth-heading" aria-hidden="true"
+     data-auth-open="{% if reg_msgs %}register{% elif login_msgs or request.GET.next %}login{% endif %}">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content zuno-auth">
+            <aside class="zuno-auth-aside">
+                {% include "components/logo.html" with on="light" height=30 %}
+                <div>
+                    <h2>Xaridlar va hamkorlik — <span>bitta kabinetda</span></h2>
+                    <p>Buyurtmalaringiz, sotuv havolalaringiz va balansingizni bir joydan boshqaring.</p>
+                </div>
+            </aside>
+
+            <div class="zuno-auth-main">
+                <button type="button" class="zuno-auth-close" data-dismiss="modal" aria-label="Yopish">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+
+                <div class="zuno-auth-mobile-logo">{% include "components/logo.html" with on="light" height=28 %}</div>
+
+                <ul class="nav zuno-auth-tabs" role="tablist">
+                    <li role="presentation">
+                        <a class="{% if not reg_msgs %}active{% endif %}" id="tab-login" data-toggle="tab" href="#login-form" role="tab"
+                           aria-controls="login-form" aria-selected="{% if reg_msgs %}false{% else %}true{% endif %}">Kirish</a>
+                    </li>
+                    <li role="presentation">
+                        <a class="{% if reg_msgs %}active{% endif %}" id="tab-register" data-toggle="tab" href="#register" role="tab"
+                           aria-controls="register" aria-selected="{% if reg_msgs %}true{% else %}false{% endif %}">Ro'yxatdan o'tish</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <!-- Kirish -->
+                    <div class="tab-pane{% if not reg_msgs %} active{% endif %}" id="login-form" role="tabpanel" aria-labelledby="tab-login">
+                        <h2 class="zuno-auth-title" id="auth-heading">Hisobga kirish</h2>
+                        <p class="zuno-auth-subtitle">Telefon raqamingiz va parolingizni kiriting.</p>
+                        {% include "components/form_alert.html" with items=login_msgs id="login-error" extra="zuno-form-alert" %}
+                        <form action="{% url 'login' %}" method="post" novalidate>
+                            {% csrf_token %}
+                            {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
+                            {% include "components/field.html" with id="phone-mask" name="phone_number" label="Telefon raqam" type="tel" placeholder="+998 (90) 123-45-67" autocomplete="tel" inputmode="tel" %}
+                            {% include "components/field.html" with id="login-password" name="password" label="Parol" type="password" placeholder="Parolingiz" autocomplete="current-password" %}
+                            <button type="submit" class="zuno-btn">Kirish</button>
+                        </form>
+                        <p class="zuno-auth-foot">Hisobingiz yo'qmi?<a href="#register" class="zuno-link" data-auth-switch="#tab-register">Ro'yxatdan o'ting</a></p>
+                    </div>
+
+                    <!-- Ro'yxatdan o'tish -->
+                    <div class="tab-pane{% if reg_msgs %} active{% endif %}" id="register" role="tabpanel" aria-labelledby="tab-register">
+                        <h2 class="zuno-auth-title">Ro'yxatdan o'tish</h2>
+                        <p class="zuno-auth-subtitle">Bir daqiqada yangi hisob oching.</p>
+                        <form action="{% url 'register' %}" method="post" novalidate>
+                            {% csrf_token %}
+                            {% include "components/field.html" with id="register-phone" name="phone_number" label="Telefon raqam" type="tel" placeholder="+998 (90) 123-45-67" autocomplete="tel" inputmode="tel" errors=reg_msgs|tagged:"field-phone_number" %}
+                            {% include "components/field.html" with id="register-password" name="password" label="Parol" type="password" placeholder="Kamida 8 belgi" autocomplete="new-password" help="Kamida 8 belgi. Faqat raqamlardan iborat yoki juda oddiy parol qabul qilinmaydi." errors=reg_msgs|tagged:"field-password" %}
+                            {% include "components/field.html" with id="register-password2" name="conf_password" label="Parolni takrorlang" type="password" placeholder="Parolni qayta kiriting" autocomplete="new-password" errors=reg_msgs|tagged:"field-conf_password" %}
+                            <div class="zuno-field">
+                                <label class="zuno-check" for="customCheck2">
+                                    <input type="checkbox" id="customCheck2" required>
+                                    <span><a href="{% url 'terms' %}" target="_blank" rel="noopener" class="zuno-link">Foydalanish shartlari</a>ga roziman</span>
+                                </label>
+                            </div>
+                            <button type="submit" class="zuno-btn">Hisob ochish</button>
+                        </form>
+                        <p class="zuno-auth-foot">Hisobingiz bormi?<a href="#login-form" class="zuno-link" data-auth-switch="#tab-login">Kirish</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endwith %}
+
+{% block body %}
+{% endblock %}
+
+<footer class="modern-footer">
+    <div class="footer-copyright">
+        <div class="container">
+            <div class="copyright-content">
+                <p class="copyright-text">
+                    <a href="/" aria-label="ZUNO — bosh sahifa">{% include "components/logo.html" with on="light" height=22 %}</a>
+                    <span>© 2026 ZUNO. Barcha huquqlar himoyalangan</span>
+                </p>
+                <div class="footer-links">
+                    <a href="/">Bosh sahifa</a>
+                    <a href="{% url 'shop' %}">Do'kon</a>
+                    <a href="{% url 'track-order' %}">Buyurtmani kuzatish</a>
+                    <a href="{% url 'terms' %}">Shartlar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Core JavaScript Libraries -->
+<script src="{% static 'apps/jquery.min.js' %}"></script>
+<script src="{% static 'apps/bootstrap.bundle.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        // Forma xatosi bo'lsa oyna kerakli tabda ochiladi va birinchi xato maydonga fokus beriladi
+        var $auth = $('#login');
+        if ($auth.data('auth-open')) {
+            $auth.one('shown.bs.modal', function () {
+                var bad = $auth.find('.tab-pane.active [aria-invalid="true"]').first();
+                (bad.length ? bad : $auth.find('.tab-pane.active input:visible').first()).trigger('focus');
+            }).modal('show');
+        }
+
+        $('[data-auth-switch]').on('click', function (e) {
+            e.preventDefault();
+            $($(this).data('auth-switch')).tab('show');
+        });
+
+        setTimeout(function () {
+            document.querySelectorAll('.app-toast').forEach(function (toast) {
+                toast.classList.add('toast-hide');
+                setTimeout(function () {
+                    toast.remove();
+                }, 300);
+            });
+        }, 4000);
+    });
+</script>
+<script src="{% static 'apps/brand/zuno.js' %}"></script>
+<form id="logout-form" action="{% url 'logout' %}" method="post" hidden>{% csrf_token %}</form>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% load static order_extras %}{% comment %}
+Mahsulot kartasi (bosh sahifa, qidiruv, katalog). Faqat haqiqiy ma'lumot:
+nom, narx, rasm va omborda bor-yo'qligi (stock_quantity).
+Butun karta bitta havola: klaviatura va sensorli ekranda ham ishlaydi, hover shart emas.
+{% endcomment %}<article class="zuno-pcard">
+    <a class="zuno-pcard__link" href="{% url 'product-detail' product.slug %}">
+        <div class="zuno-pcard__media">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.title }}" loading="lazy" width="400" height="400">
+            {% else %}
+                <img src="{% static 'apps/brand/product-placeholder.svg' %}" alt="" width="400" height="400">
+            {% endif %}
+            {% if product.stock_quantity == 0 %}
+                <span class="zuno-pcard__badge is-out">Tugagan</span>
+            {% endif %}
+        </div>
+        <div class="zuno-pcard__body">
+            {% if product.category %}<span class="zuno-pcard__cat">{{ product.category.title }}</span>{% endif %}
+            <h3 class="zuno-pcard__title">{{ product.title }}</h3>
+            <div class="zuno-pcard__foot">
+                <span class="zuno-pcard__price">{{ product.price|space_number }} <small>so'm</small></span>
+                <span class="zuno-pcard__go" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+            </div>
+        </div>
+    </a>
+</article>

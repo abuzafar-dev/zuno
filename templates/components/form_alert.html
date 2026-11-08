@@ -1,0 +1,11 @@
+{% comment %}
+Forma xabari (xato/muvaffaqiyat/ogohlantirish) — bitta komponent.
+  items   — xabarlar ro'yxati (Django messages yoki satrlar)
+  id      — aria-describedby uchun id
+  kind    — error (standart) | success | warning | info
+  extra   — qo'shimcha klass (masalan zuno-form-alert)
+Bir nechta xabar bo'lsa, bitta blok ichida ro'yxat sifatida chiqadi.
+{% endcomment %}{% if items %}<div class="zuno-alert zuno-alert--{{ kind|default:'error' }} {{ extra }}"{% if id %} id="{{ id }}"{% endif %} role="{% if kind == 'success' or kind == 'info' %}status{% else %}alert{% endif %}">
+    {% if kind == 'success' %}<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.86-9.86a.75.75 0 0 0-1.22-.88l-3.24 4.5-1.6-1.6a.75.75 0 1 0-1.06 1.06l2.22 2.22a.75.75 0 0 0 1.14-.1l3.76-5.2Z" clip-rule="evenodd"/></svg>{% else %}<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-4.75a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V6a.75.75 0 0 1 .75-.75ZM10 15a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/></svg>{% endif %}
+    <ul{% if items|length > 1 %} class="is-multiple"{% endif %}>{% for item in items %}<li>{{ item }}</li>{% endfor %}</ul>
+</div>{% endif %}

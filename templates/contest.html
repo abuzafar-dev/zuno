@@ -1,0 +1,251 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+
+{% block body %}
+    <style>
+        /* ============ KONKURS BLOKI ============ */
+
+        .competition-header {
+            margin-bottom: 20px;
+        }
+
+        .competition-header h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+
+        .competition-header h3 i {
+            color: #f59e0b;
+        }
+
+        /* Konkurs kartochkasi */
+        .competition-card {
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            margin-bottom: 30px;
+        }
+
+        .competition-image {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .competition-content {
+            padding: 30px;
+        }
+
+        .competition-content h3 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+
+        .competition-content p {
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        /* Boshlash / Yakunlash bloklari */
+        .competition-dates {
+            display: flex;
+            gap: 20px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .date-card {
+            flex: 1;
+            min-width: 200px;
+            padding: 20px 25px;
+            border-radius: 14px;
+            text-align: center;
+            color: var(--zuno-text);
+        }
+
+        .date-card h5 {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
+            margin: 0 0 8px 0;
+        }
+
+        .date-card p {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--zuno-text);
+        }
+
+        .date-card.info {
+            background: #E0F6EA;
+        }
+
+        .date-card.danger {
+            background: #FDECEC;
+        }
+
+        /* Konkurs natijalari kartasi */
+        .results-card {
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        .results-header {
+            background: var(--zuno-panel);
+            padding: 20px 30px;
+        }
+
+        .results-header h5 {
+            color: var(--zuno-text);
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cache-info {
+            background: #fffbeb;
+            border-bottom: 1px solid #fef3c7;
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #b45309;
+        }
+
+        .results-table {
+            overflow-x: auto;
+        }
+
+        .table-modern {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-modern thead th {
+            background: var(--zuno-panel);
+            color: var(--zuno-text);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            padding: 14px 30px;
+            text-align: left;
+        }
+
+        .table-modern tbody td {
+            padding: 14px 30px;
+            font-size: 14px;
+            color: #334155;
+            border-bottom: 1px solid #F3F6EC;
+        }
+
+        .table-modern tbody tr:nth-child(even) {
+            background: #F8FAF3;
+        }
+
+        .table-modern tbody tr:hover {
+            background: var(--zuno-lime-soft);
+        }
+
+        .table-modern tbody tr:first-child td {
+            font-weight: 700;
+            color: var(--zuno-accent-text);
+        }
+    </style>
+    <div class="container market-container" style="margin-top: 40px;">
+        <div class="row">
+            {% include 'base/sidebar.html' %}
+            <div class="col-md-9">
+
+                <div class="competition-header">
+                    <h3>
+                        <i class="icofont-trophy-alt"></i>
+                        Konkurs
+                    </h3>
+                </div>
+
+                <div class="competition-card">
+                    {% if competition.image %}
+                        <img class="competition-image" src="{{ competition.image.url }}" alt="{{ competition.title }}">
+                    {% endif %}
+
+                    <div class="competition-content">
+                        <h3>{{ competition.title }}</h3>
+                        {{ competition.description|linebreaks }}
+
+                        <div class="competition-dates">
+                            <div class="date-card info">
+                                <h5>Boshlash</h5>
+                                <p>{{ competition.start_date|date:"d-F, Y-\y\i\l" }}</p>
+                            </div>
+                            <div class="date-card danger">
+                                <h5>Yakunlash</h5>
+                                <p>{{ competition.end_date|date:"d-F, Y-\y\i\l" }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="results-card">
+                        <div class="results-header">
+                            <h5>
+                                <i class="icofont-chart-bar-graph"></i>
+                                Konkurs natijalari
+                            </h5>
+                        </div>
+                        <div class="cache-info">
+                            <i class="icofont-clock-time"></i>
+                            <span>Ma'lumotlar har 10 daqiqada yangilanadi</span>
+                        </div>
+                        <div class="results-table">
+                            <table class="table-modern">
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Sotuvchi</th>
+                                    <th>Sotilgan</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for result in results %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ result.display_name|default:"—" }}</td>
+                                        <td>{{ result.sold_count }}</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="3">Hozircha natijalar mavjud emas.</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,380 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block body %}
+    <style>
+        .requests-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+            border: 1px solid #F3F6EC;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .requests-header {
+            margin-bottom: 20px;
+        }
+
+        .requests-header h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+
+        .requests-header h3 i {
+            color: var(--zuno-accent-text);
+        }
+
+        .status-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .status-tab {
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            color: #475569;
+            background: #F3F6EC;
+            border: 1px solid #E3E8D8;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .status-tab:hover {
+            background: #E3E8D8;
+            color: #334155;
+        }
+
+        .status-tab.active {
+            background: var(--zuno-panel);
+            color: var(--zuno-text);
+            border-color: transparent;
+            box-shadow: 0 6px 14px rgba(11, 12, 15, 0.15);
+        }
+
+        .requests-search-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #F8FAF3;
+            border: 1px solid #E3E8D8;
+            border-radius: 50px;
+            padding: 6px 6px 6px 24px;
+            margin-bottom: 28px;
+            width: 100%;
+        }
+
+        .requests-search-bar input[type="text"] {
+            flex: 1;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 15px;
+            color: #334155;
+            padding: 12px 0;
+        }
+
+        .requests-search-bar input[type="text"]::placeholder {
+            color: #64748B;
+        }
+
+        .requests-search-bar button {
+            width: 46px;
+            height: 46px;
+            min-width: 46px;
+            border-radius: 50%;
+            border: none;
+            background: var(--zuno-lime);
+            color: var(--zuno-ink);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+        }
+
+        .requests-search-bar button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 14px rgba(11, 12, 15, 0.17);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 14px;
+        }
+
+        .table-modern {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table-modern thead th {
+            background: var(--zuno-panel);
+            color: var(--zuno-text);
+            text-align: left;
+            padding: 16px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .table-modern thead th:first-child {
+            border-top-left-radius: 12px;
+        }
+
+        .table-modern thead th:last-child {
+            border-top-right-radius: 12px;
+        }
+
+        .table-modern tbody td {
+            padding: 16px 14px;
+            font-size: 14px;
+            color: #334155;
+            border-bottom: 1px solid #F3F6EC;
+        }
+
+        .table-modern tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .table-modern tbody tr:hover {
+            background: #F8FAF3;
+        }
+
+        .table-modern tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .status-new {
+            background: var(--zuno-panel);
+            color: var(--zuno-text);
+        }
+
+        .status-processing {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .status-confirmed {
+            background: #22c55e;
+            color: white;
+        }
+
+        .status-rejected {
+            background: #ef4444;
+            color: white;
+        }
+
+        .status-no_answer {
+            background: #64748B;
+            color: white;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: #64748B;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 52px;
+            margin-bottom: 16px;
+            color: #cbd5e1;
+        }
+
+        .empty-state strong {
+            font-size: 15px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .pagination-modern {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 28px;
+        }
+
+        .pagination-modern a,
+        .pagination-modern span {
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            color: #334155;
+            border: 1px solid #E3E8D8;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-modern a:hover {
+            background: #F8FAF3;
+            border-color: var(--zuno-ink);
+            color: var(--zuno-accent-text);
+        }
+
+        .pagination-modern .active {
+            background: var(--zuno-panel);
+            color: var(--zuno-text);
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .requests-card {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .status-tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+                padding-bottom: 4px;
+            }
+
+            .status-tabs::-webkit-scrollbar {
+                display: none;
+            }
+
+            .status-tab {
+                flex-shrink: 0;
+            }
+
+            .table-modern thead {
+                display: none;
+            }
+
+            .table-modern tbody tr {
+                display: block;
+                margin-bottom: 12px;
+                border: 1px solid #F3F6EC;
+                border-radius: 12px;
+                padding: 10px;
+            }
+
+            .table-modern tbody td {
+                display: flex;
+                justify-content: space-between;
+                border-bottom: 1px solid #F8FAF3;
+                padding: 8px 6px;
+            }
+
+            .table-modern tbody td:last-child {
+                border-bottom: none;
+            }
+        }
+    </style>
+
+    <div class="container market-container" style="margin-top: 40px;">
+        <div class="row">
+            {% include 'base/sidebar.html' %}
+            <div class="requests-card">
+                <div class="requests-header"
+                     style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+                    <h3>
+                        <i class="icofont-list"></i> So'rovnomalar
+                    </h3>
+                </div>
+
+                <div class="status-tabs">
+                    <a href="?status=" class="status-tab {% if not status_filter %}active{% endif %}">Hammasi</a>
+                    {% for value, label in status_choices %}
+                        <a href="?status={{ value }}"
+                           class="status-tab {% if status_filter == value %}active{% endif %}">{{ label }}</a>
+                    {% endfor %}
+                </div>
+
+                <div class="table-responsive">
+                    <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <table class="table-modern">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Operator</th>
+                                <th>Sana</th>
+                                <th>Oqim</th>
+                                <th>Haridor</th>
+                                <th>Viloyat</th>
+                                <th>Telefon</th>
+                                <th>Holati</th>
+                                <th>Izoh</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for survey in surveys %}
+                                <tr>
+                                    <td>#{{ survey.id }}</td>
+                                    <td>{{ survey.operator.first_name|default:survey.operator.phone_number|default:"—" }}</td>
+                                    <td>{{ survey.created_at|date:"d.m.Y H:i" }}</td>
+                                    <td>{{ survey.funnel.title|default:"—" }}</td>
+                                    <td>{{ survey.buyer_name }}</td>
+                                    <td>{{ survey.region.title|default:"—" }}</td>
+                                    <td>{{ survey.phone_number }}</td>
+                                    <td><span
+                                            class="status-badge status-{{ survey.status }}">{{ survey.get_status_display }}</span>
+                                    </td>
+                                    <td>{{ survey.comment|default:"—" }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="9" style="text-align: center; padding: 40px; color: #64748b;">
+                                        <i class="icofont-list"
+                                           style="font-size: 48px; display: block; margin-bottom: 16px;"></i>
+                                        <strong>Hozircha so'rovnomalar mavjud emas</strong>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        {% if surveys.paginator.num_pages > 1 %}
+                            <div class="pagination-modern">
+                                {% if surveys.has_previous %}
+                                    <a href="?page={{ surveys.previous_page_number }}&status={{ status_filter }}">&laquo;</a>
+                                {% endif %}
+                                {% for num in surveys.paginator.page_range %}
+                                    {% if num == surveys.number %}
+                                        <span class="active">{{ num }}</span>
+                                    {% else %}
+                                        <a href="?page={{ num }}&status={{ status_filter }}">{{ num }}</a>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if surveys.has_next %}
+                                    <a href="?page={{ surveys.next_page_number }}&status={{ status_filter }}">&raquo;</a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

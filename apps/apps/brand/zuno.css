@@ -1,0 +1,1216 @@
+/* ==========================================================================
+   ZUNO — brend tokenlari
+   Butun loyiha uchun yagona manba: vitrina (base.html) va operator paneli
+   shu o'zgaruvchilardan foydalanadi. Rangni faqat shu yerda o'zgartiring.
+   ========================================================================== */
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 900;
+    src: url('fonts/inter-latin-wght-normal.woff2') format('woff2-variations');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 900;
+    src: url('fonts/inter-latin-ext-wght-normal.woff2') format('woff2-variations');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+    /* Brend ranglari */
+    --zuno-lime: #C6FF4D;            /* asosiy aksent: CTA, tanlangan holat, belgi */
+    --zuno-lime-hover: #B4F032;
+    --zuno-lime-active: #A3E01F;
+    --zuno-lime-soft: rgba(198, 255, 77, 0.22);
+    --zuno-ink: #1A1F16;             /* matn va ikonka rangi */
+    --zuno-panel: #EEF8D8;           /* ta'kidlangan och sirt: sarlavha, faol holat */
+    --zuno-panel-2: #E2F2BE;         /* och sirt (hover) */
+    --zuno-page: #FBFCF8;            /* sahifa foni */
+    --zuno-ink-2: #2A3024;
+    --zuno-ink-3: #3A4232;
+    --zuno-text: #151515;            /* och fonda matn */
+    --zuno-text-on-dark: #1A1F16;    /* panel ustidagi matn */
+    --zuno-text-on-dark-muted: #566050;
+    --zuno-surface: #F4F7EC;
+    --zuno-muted: #6B7280;
+    --zuno-border: #E3E8D8;
+    --zuno-border-dark: #DCE5CC;
+    /* Lime oq fonda o'qilmaydi (1.1:1), shuning uchun och fondagi aksent matn
+       uchun to'q yashil ishlatiladi (oq fonda ~7.6:1, WCAG AA/AAA). */
+    --zuno-accent-text: #3F6212;
+
+    /* Semantik ranglar (oldingi qiymatlar saqlandi) */
+    --zuno-success: #10B981;
+    --zuno-warning: #F59E0B;
+    --zuno-danger: #EF4444;
+    --zuno-info: #3B82F6;
+
+    /* Tipografiya, radius, soya, fokus */
+    --zuno-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --zuno-radius-sm: 8px;
+    --zuno-radius: 12px;
+    --zuno-radius-lg: 16px;
+    --zuno-shadow: 0 1px 2px rgba(11, 12, 15, 0.05);
+    --zuno-shadow-lg: 0 10px 30px rgba(11, 12, 15, 0.10);
+    --zuno-focus-ring: 0 0 0 3px rgba(198, 255, 77, 0.65), 0 0 0 5px rgba(11, 12, 15, 0.85);
+}
+
+/* Klaviatura fokusi har doim ko'rinsin */
+:focus-visible {
+    outline: 2px solid var(--zuno-ink);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--zuno-lime);
+}
+
+::selection {
+    background: var(--zuno-lime);
+    color: var(--zuno-ink);
+}
+
+/* Logo komponenti (templates/components/logo.html) */
+.zuno-logo {
+    display: inline-block;
+    height: var(--zuno-logo-h, 32px);
+    width: auto;
+    max-width: none;
+    vertical-align: middle;
+}
+
+/* ==========================================================================
+   Forma komponentlari: maydon, yorliq, input, xabar (alert), parol tugmasi.
+   Kirish/ro'yxatdan o'tish oynasi va sozlamalardagi parol formasi ishlatadi.
+   ========================================================================== */
+
+:root {
+    --zuno-ease: cubic-bezier(.2, .7, .2, 1);
+    --zuno-error-bg: #FEF2F2;
+    --zuno-error-border: #FECACA;
+    --zuno-error-text: #991B1B;     /* #FEF2F2 fonda ~7.9:1 */
+    --zuno-error-strong: #DC2626;
+    --zuno-success-bg: #ECFDF5;
+    --zuno-success-border: #A7F3D0;
+    --zuno-success-text: #065F46;
+    --zuno-warning-bg: #FFFBEB;
+    --zuno-warning-border: #FDE68A;
+    --zuno-warning-text: #92400E;
+}
+
+.zuno-field {
+    margin-bottom: 18px;
+}
+
+.zuno-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--zuno-text);
+}
+
+.zuno-help {
+    margin: 6px 0 0;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--zuno-muted);
+}
+
+.zuno-input-wrap {
+    position: relative;
+}
+
+.zuno-input {
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+    font: 500 15px/1.2 var(--zuno-font);
+    color: var(--zuno-text);
+    background: #fff;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    box-shadow: none;
+    transition: border-color .18s var(--zuno-ease), box-shadow .18s var(--zuno-ease), background-color .18s;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.zuno-input-wrap .zuno-input {
+    padding-right: 48px;
+}
+
+.zuno-input::placeholder {
+    color: var(--zuno-muted);
+    opacity: 1;
+}
+
+.zuno-input:hover {
+    border-color: #9CA3AF;
+}
+
+.zuno-input:focus {
+    outline: none;
+    border-color: var(--zuno-ink);
+    box-shadow: 0 0 0 3px rgba(198, 255, 77, 0.6);
+}
+
+.zuno-input:disabled {
+    background: var(--zuno-surface);
+    color: var(--zuno-muted);
+    cursor: not-allowed;
+}
+
+.zuno-input[aria-invalid="true"] {
+    border-color: var(--zuno-error-strong);
+    background: #FFFBFB;
+}
+
+.zuno-input[aria-invalid="true"]:focus {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.18);
+}
+
+/* Parolni ko'rsatish/yashirish */
+.zuno-pw-toggle {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    color: var(--zuno-muted);
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: color .15s, background-color .15s;
+}
+
+.zuno-pw-toggle:hover {
+    color: var(--zuno-text);
+    background: var(--zuno-surface);
+}
+
+.zuno-pw-toggle svg {
+    width: 20px;
+    height: 20px;
+}
+
+.zuno-pw-toggle .zuno-eye-off,
+.zuno-pw-toggle[aria-pressed="true"] .zuno-eye {
+    display: none;
+}
+
+.zuno-pw-toggle[aria-pressed="true"] .zuno-eye-off {
+    display: block;
+}
+
+/* Xabarlar: xato / muvaffaqiyat / ogohlantirish — bitta komponent */
+.zuno-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    border: 1px solid;
+    border-radius: 10px;
+    overflow-wrap: anywhere;
+}
+
+.zuno-alert > svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+}
+
+.zuno-alert ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.zuno-alert li + li {
+    margin-top: 4px;
+}
+
+/* Bir nechta xato bo'lsa — nuqtali ro'yxat */
+.zuno-alert ul.is-multiple li {
+    position: relative;
+    padding-left: 12px;
+}
+
+.zuno-alert ul.is-multiple li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: .62em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.zuno-alert--error {
+    color: var(--zuno-error-text);
+    background: var(--zuno-error-bg);
+    border-color: var(--zuno-error-border);
+}
+
+.zuno-alert--success {
+    color: var(--zuno-success-text);
+    background: var(--zuno-success-bg);
+    border-color: var(--zuno-success-border);
+}
+
+.zuno-alert--warning {
+    color: var(--zuno-warning-text);
+    background: var(--zuno-warning-bg);
+    border-color: var(--zuno-warning-border);
+}
+
+.zuno-alert--info {
+    color: var(--zuno-text);
+    background: var(--zuno-surface);
+    border-color: var(--zuno-border);
+}
+
+.zuno-field .zuno-alert {
+    margin-top: 8px;
+}
+
+.zuno-form-alert {
+    margin-bottom: 18px;
+}
+
+/* Asosiy tugma (lime) — formalar uchun */
+.zuno-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 50px;
+    padding: 0 20px;
+    font: 700 15px/1 var(--zuno-font);
+    color: var(--zuno-ink);
+    background: var(--zuno-lime);
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform .18s var(--zuno-ease), box-shadow .18s var(--zuno-ease), background-color .18s;
+}
+
+.zuno-btn:hover {
+    background: var(--zuno-lime-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px -8px rgba(11, 12, 15, 0.45), 0 0 0 4px rgba(198, 255, 77, 0.18);
+}
+
+.zuno-btn:active {
+    background: var(--zuno-lime-active);
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.zuno-btn:disabled,
+.zuno-btn[aria-disabled="true"] {
+    color: var(--zuno-muted);
+    background: var(--zuno-border);
+    transform: none;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.zuno-link {
+    font-weight: 600;
+    color: var(--zuno-text);
+    text-decoration: underline;
+    text-decoration-color: var(--zuno-lime-hover);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+}
+
+.zuno-link:hover {
+    color: var(--zuno-accent-text);
+}
+
+.zuno-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--zuno-text);
+    cursor: pointer;
+}
+
+.zuno-check input {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    accent-color: var(--zuno-ink);
+}
+
+/* ==========================================================================
+   Kirish / ro'yxatdan o'tish oynasi (base.html, #login)
+   ========================================================================== */
+
+.zuno-auth-modal .modal-dialog {
+    max-width: 880px;
+    padding: 0 12px;
+}
+
+.zuno-auth {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    border: 0;
+    border-radius: 20px;
+    box-shadow: 0 30px 80px -20px rgba(11, 12, 15, 0.45);
+}
+
+.zuno-auth-aside {
+    position: relative;
+    display: flex;
+    flex: 0 0 40%;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 40px 36px;
+    color: var(--zuno-text-on-dark);
+    background: var(--zuno-panel);
+}
+
+.zuno-auth-aside .zuno-logo {
+    align-self: flex-start;
+}
+
+.zuno-auth-aside::after {
+    content: '';
+    position: absolute;
+    right: -70px;
+    top: -70px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    border: 1px solid var(--zuno-border-dark);
+    pointer-events: none;
+}
+
+.zuno-auth-aside h2 {
+    margin: 0 0 10px;
+    font-size: 26px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--zuno-text-on-dark);
+}
+
+.zuno-auth-aside h2 span {
+    color: var(--zuno-accent-text);
+}
+
+.zuno-auth-aside p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--zuno-text-on-dark-muted);
+}
+
+.zuno-auth-main {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 36px 40px 32px;
+    background: #fff;
+}
+
+.zuno-auth-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    color: var(--zuno-muted);
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color .15s, color .15s;
+}
+
+.zuno-auth-close:hover {
+    color: var(--zuno-text);
+    background: var(--zuno-surface);
+}
+
+.zuno-auth-mobile-logo {
+    display: none;
+    margin-bottom: 20px;
+}
+
+.zuno-auth-tabs {
+    display: inline-flex;
+    gap: 4px;
+    margin: 0 0 24px;
+    padding: 4px;
+    list-style: none;
+    background: var(--zuno-surface);
+    border-radius: 12px;
+}
+
+.zuno-auth-tabs a {
+    display: block;
+    padding: 9px 16px;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--zuno-muted);
+    text-decoration: none;
+    border-radius: 9px;
+    transition: background-color .18s, color .18s, box-shadow .18s;
+}
+
+.zuno-auth-tabs a:hover {
+    color: var(--zuno-text);
+}
+
+.zuno-auth-tabs a.active {
+    color: var(--zuno-accent-text);
+    background: var(--zuno-panel);
+    box-shadow: 0 4px 10px -4px rgba(11, 12, 15, 0.5);
+}
+
+.zuno-auth-title {
+    margin: 0 0 4px;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--zuno-text);
+}
+
+.zuno-auth-subtitle {
+    margin: 0 0 22px;
+    font-size: 14px;
+    color: var(--zuno-muted);
+}
+
+.zuno-auth-foot {
+    margin: 16px 0 0;
+    font-size: 13.5px;
+    text-align: center;
+    color: var(--zuno-muted);
+}
+
+.zuno-auth-foot a {
+    margin-left: 4px;
+}
+
+@media (max-width: 767.98px) {
+    .zuno-auth-aside {
+        display: none;
+    }
+
+    .zuno-auth-mobile-logo {
+        display: block;
+    }
+
+    .zuno-auth-main {
+        padding: 28px 20px 24px;
+    }
+
+    .zuno-auth-tabs {
+        display: flex;
+    }
+
+    .zuno-auth-tabs li {
+        flex: 1;
+        text-align: center;
+    }
+
+    .zuno-auth-tabs a {
+        padding: 9px 8px;
+        font-size: 13.5px;
+    }
+}
+
+/* Toast xabarlari — yuqoridagi alert bilan bir xil vizual til */
+.app-toast.zuno-toast {
+    color: var(--zuno-text);
+    background: #fff;
+    border: 1px solid var(--zuno-border);
+    border-left: 4px solid;
+    box-shadow: 0 12px 30px -10px rgba(11, 12, 15, 0.3);
+}
+
+.zuno-toast.toast-success { border-left-color: var(--zuno-success); }
+.zuno-toast.toast-danger { border-left-color: var(--zuno-error-strong); }
+.zuno-toast.toast-warning { border-left-color: var(--zuno-warning); }
+.zuno-toast.toast-info { border-left-color: var(--zuno-ink); }
+
+.zuno-toast .toast-icon { color: #fff; }
+.zuno-toast.toast-success .toast-icon { background: var(--zuno-success); }
+.zuno-toast.toast-danger .toast-icon { background: var(--zuno-error-strong); }
+.zuno-toast.toast-warning .toast-icon { background: var(--zuno-warning); }
+.zuno-toast.toast-info .toast-icon { background: var(--zuno-panel); color: var(--zuno-accent-text); }
+
+.zuno-toast .toast-close {
+    color: var(--zuno-muted);
+}
+
+/* ==========================================================================
+   Do'kon: hero, bo'limlar, mahsulot kartasi, saralash, sahifalash, holatlar
+   ========================================================================== */
+
+.zuno-btn--sm { width: auto; height: 42px; padding: 0 18px; font-size: 14px; }
+.zuno-btn--auto { width: auto; }
+
+.zuno-btn.is-loading {
+    pointer-events: none;
+    color: var(--zuno-ink);
+    background: var(--zuno-lime-hover);
+    transform: none;
+    box-shadow: none;
+}
+
+.zuno-btn.is-loading svg { display: none; }
+
+.zuno-btn.is-loading::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: zuno-spin .7s linear infinite;
+}
+
+@keyframes zuno-spin { to { transform: rotate(360deg); } }
+
+.zuno-eyebrow {
+    margin: 0 0 6px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--zuno-accent-text);
+}
+
+.zuno-eyebrow--dark { color: var(--zuno-accent-text); }
+
+/* Hero */
+.zuno-hero {
+    position: relative;
+    overflow: hidden;
+    color: var(--zuno-text-on-dark);
+    background: var(--zuno-panel);
+    border-bottom: 1px solid var(--zuno-border-dark);
+}
+
+.zuno-hero::before {
+    /* nozik nuqtali to'r — chuqurlik uchun, rasm emas */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(248, 249, 250, .07) 1px, transparent 1px);
+    background-size: 22px 22px;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 55%);
+    mask-image: linear-gradient(90deg, transparent, #000 55%);
+    pointer-events: none;
+}
+
+.zuno-hero__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+    align-items: center;
+    gap: 40px;
+    padding-top: 64px;
+    padding-bottom: 64px;
+}
+
+.zuno-hero__title {
+    margin: 0 0 16px;
+    font-size: clamp(32px, 4.6vw, 54px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    color: var(--zuno-text-on-dark);
+}
+
+.zuno-hero__title span { color: var(--zuno-accent-text); }
+
+.zuno-hero__lead {
+    max-width: 520px;
+    margin: 0 0 28px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--zuno-text-on-dark-muted);
+}
+
+.zuno-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 540px;
+    padding: 6px 6px 6px 46px;
+    background: #fff;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    transition: box-shadow .18s, border-color .18s;
+}
+
+.zuno-search:focus-within { box-shadow: 0 0 0 4px rgba(198, 255, 77, .55); }
+
+.zuno-search__icon {
+    position: absolute;
+    left: 16px;
+    width: 20px;
+    height: 20px;
+    color: var(--zuno-muted);
+}
+
+.zuno-search input {
+    flex: 1;
+    min-width: 0;
+    height: 42px;
+    font: 500 15px var(--zuno-font);
+    color: var(--zuno-text);
+    background: transparent;
+    border: 0;
+    outline: none;
+    box-shadow: none !important;
+}
+
+.zuno-search input::placeholder { color: var(--zuno-muted); }
+
+.zuno-search--inline {
+    width: 100%;
+    max-width: 420px;
+    padding-left: 6px;
+    border-color: #D1D5DB;
+}
+
+.zuno-search--inline input { padding-left: 10px; }
+
+.zuno-hero__actions { margin-top: 18px; }
+
+.zuno-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 2px;
+    font-weight: 600;
+    color: var(--zuno-text-on-dark);
+    text-decoration: none;
+    border-bottom: 2px solid var(--zuno-border-dark);
+    transition: border-color .18s, color .18s;
+}
+
+.zuno-btn-ghost svg { width: 18px; height: 18px; transition: transform .18s var(--zuno-ease); }
+.zuno-btn-ghost:hover { color: var(--zuno-accent-text); border-color: var(--zuno-lime); text-decoration: none; }
+.zuno-btn-ghost:hover svg { transform: translateX(3px); }
+
+/* Imzo detali: katta lime Z va uchta haqiqiy mahsulot rasmi */
+.zuno-hero__visual {
+    position: relative;
+    height: 360px;
+}
+
+.zuno-hero__z {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 78%;
+    fill: var(--zuno-lime);
+    transform: translate(-50%, -50%);
+    animation: zuno-z-in .7s var(--zuno-ease) both;
+}
+
+.zuno-hero__tile {
+    position: absolute;
+    overflow: hidden;
+    background: var(--zuno-panel-2);
+    border: 4px solid var(--zuno-ink);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px -18px rgba(0, 0, 0, .7);
+    animation: zuno-tile-in .7s var(--zuno-ease) both;
+}
+
+.zuno-hero__tile img { width: 100%; height: 100%; object-fit: cover; }
+.zuno-hero__tile--1 { top: 0; right: 4%; width: 46%; aspect-ratio: 1; animation-delay: .12s; }
+.zuno-hero__tile--2 { bottom: 0; left: 2%; width: 40%; aspect-ratio: 1; animation-delay: .22s; }
+.zuno-hero__tile--3 { bottom: 10%; right: 0; width: 28%; aspect-ratio: 1; animation-delay: .32s; }
+
+@keyframes zuno-z-in { from { opacity: 0; transform: translate(-50%, -46%) skewX(-6deg); } }
+@keyframes zuno-tile-in { from { opacity: 0; transform: translateY(14px); } }
+
+/* Bo'limlar */
+.zuno-section { padding: 56px 0; }
+.zuno-section--tint { background: var(--zuno-surface); }
+
+.zuno-section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.zuno-section-title {
+    margin: 0;
+    font-size: clamp(22px, 2.4vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--zuno-text);
+}
+
+.zuno-section-sub { margin: 6px 0 0; color: var(--zuno-muted); }
+
+.zuno-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    color: var(--zuno-text);
+    text-decoration: none;
+}
+
+.zuno-more svg { width: 18px; height: 18px; transition: transform .18s var(--zuno-ease); }
+.zuno-more:hover { color: var(--zuno-accent-text); text-decoration: none; }
+.zuno-more:hover svg { transform: translateX(3px); }
+
+/* Kategoriyalar */
+.zuno-cats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.zuno-cat {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    color: var(--zuno-text);
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid var(--zuno-border);
+    border-radius: 14px;
+    transition: border-color .18s, transform .18s var(--zuno-ease), box-shadow .18s;
+}
+
+.zuno-cat__img {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    background: var(--zuno-surface);
+    border-radius: 12px;
+}
+
+.zuno-cat__img img { width: 100%; height: 100%; object-fit: cover; }
+.zuno-cat__title { font-size: 14px; font-weight: 600; line-height: 1.25; }
+
+.zuno-cat:hover {
+    color: var(--zuno-text);
+    text-decoration: none;
+    border-color: var(--zuno-ink);
+}
+
+/* Mahsulotlar to'ri va kartasi */
+.zuno-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.zuno-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.zuno-pcard { height: 100%; }
+
+.zuno-pcard__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    color: var(--zuno-text);
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid var(--zuno-border);
+    border-radius: 16px;
+    transition: transform .22s var(--zuno-ease), box-shadow .22s var(--zuno-ease), border-color .22s;
+}
+
+.zuno-pcard__link:hover { color: var(--zuno-text); text-decoration: none; }
+
+.zuno-pcard__media {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: var(--zuno-surface);
+}
+
+.zuno-pcard__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s var(--zuno-ease);
+}
+
+.zuno-pcard__badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 999px;
+}
+
+.zuno-pcard__badge.is-out { color: var(--zuno-text); background: var(--zuno-panel); }
+
+.zuno-pcard__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 16px 16px;
+}
+
+.zuno-pcard__cat {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--zuno-muted);
+}
+
+.zuno-pcard__title {
+    display: -webkit-box;
+    min-height: 2.6em;
+    margin: 0;
+    overflow: hidden;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--zuno-text);
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.zuno-pcard__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 6px;
+}
+
+.zuno-pcard__price {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--zuno-text);
+    white-space: nowrap;
+}
+
+.zuno-pcard__price small { font-size: 12px; font-weight: 600; color: var(--zuno-muted); }
+
+.zuno-pcard__go {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: var(--zuno-ink);
+    background: var(--zuno-surface);
+    border-radius: 50%;
+    transition: background-color .22s, transform .22s var(--zuno-ease);
+}
+
+.zuno-pcard__go svg { width: 18px; height: 18px; }
+
+/* Hover faqat sichqoncha bor qurilmalarda; sensorli ekranda karta oddiy havola */
+@media (hover: hover) and (pointer: fine) {
+    .zuno-cat:hover { transform: translateY(-2px); box-shadow: 0 10px 22px -14px rgba(11, 12, 15, .4); }
+    .zuno-pcard__link:hover {
+        border-color: #D1D5DB;
+        transform: translateY(-3px);
+        box-shadow: 0 18px 36px -20px rgba(11, 12, 15, .45);
+    }
+    .zuno-pcard__link:hover .zuno-pcard__media img { transform: scale(1.04); }
+    .zuno-pcard__link:hover .zuno-pcard__go { background: var(--zuno-lime); transform: translateX(2px); }
+}
+
+.zuno-pcard__link:focus-visible { border-color: var(--zuno-ink); }
+
+/* Katalog paneli */
+.zuno-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding: 10px 12px 10px 16px;
+    background: #fff;
+    border: 1px solid var(--zuno-border);
+    border-radius: 14px;
+}
+
+.zuno-toolbar__count { margin: 0; font-size: 14px; font-weight: 600; color: var(--zuno-muted); }
+
+.zuno-select {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 14px;
+    color: var(--zuno-muted);
+}
+
+.zuno-select select {
+    height: 40px;
+    padding: 0 34px 0 12px;
+    font: 600 14px var(--zuno-font);
+    color: var(--zuno-text);
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23151515' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.zuno-select select:focus { outline: none; border-color: var(--zuno-ink); box-shadow: 0 0 0 3px rgba(198, 255, 77, .6); }
+
+select.zuno-input {
+    padding-right: 36px;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23151515' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center;
+    cursor: pointer;
+}
+
+/* Sahifalash */
+.zuno-pager {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 32px;
+}
+
+.zuno-pager__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 42px;
+    padding: 0 12px;
+    font-weight: 700;
+    color: var(--zuno-text);
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid var(--zuno-border);
+    border-radius: 10px;
+    transition: border-color .15s, background-color .15s;
+}
+
+.zuno-pager__btn:hover { color: var(--zuno-text); text-decoration: none; border-color: var(--zuno-ink); }
+.zuno-pager__btn.is-active { color: var(--zuno-accent-text); background: var(--zuno-panel); border-color: var(--zuno-ink); }
+.zuno-pager__gap { align-self: center; padding: 0 4px; color: var(--zuno-muted); }
+
+/* Bo'sh holat */
+.zuno-empty {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 48px 20px;
+    text-align: center;
+}
+
+.zuno-empty__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+    color: var(--zuno-accent-text);
+    background: var(--zuno-panel);
+    border-radius: 18px;
+}
+
+.zuno-empty__mark svg { width: 28px; height: 28px; }
+.zuno-empty h2 { margin: 0 0 8px; font-size: 22px; font-weight: 800; }
+.zuno-empty p { margin: 0 0 20px; color: var(--zuno-muted); }
+
+.zuno-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.zuno-chip {
+    padding: 7px 14px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--zuno-text);
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid var(--zuno-border);
+    border-radius: 999px;
+    transition: border-color .15s, background-color .15s;
+}
+
+.zuno-chip:hover { color: var(--zuno-text); text-decoration: none; border-color: var(--zuno-ink); background: var(--zuno-lime-soft); }
+
+/* Server tasdiqlagan muvaffaqiyat (buyurtma qabul qilindi) */
+.zuno-success {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding: 16px;
+    color: var(--zuno-text-on-dark);
+    background: var(--zuno-panel);
+    border-radius: 14px;
+    outline: none;
+    animation: zuno-tile-in .4s var(--zuno-ease) both;
+}
+
+.zuno-success__icon {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: var(--zuno-ink);
+    background: var(--zuno-lime);
+    border-radius: 50%;
+}
+
+.zuno-success__icon svg { width: 22px; height: 22px; }
+
+.zuno-success__tick {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    animation: zuno-tick .45s .25s var(--zuno-ease) forwards;
+}
+
+@keyframes zuno-tick { to { stroke-dashoffset: 0; } }
+
+.zuno-success__title { margin: 0 0 2px; font-weight: 700; color: var(--zuno-text-on-dark); }
+.zuno-success__text { margin: 0; font-size: 13.5px; color: var(--zuno-text-on-dark-muted); }
+
+.pd-price-old {
+    margin-left: 6px;
+    font-size: .7em;
+    font-weight: 500;
+    color: var(--zuno-muted);
+}
+
+/* Ekranga kirganda yumshoq paydo bo'lish (.is-pending faqat JS qo'shadi) */
+.zuno-reveal.is-pending {
+    opacity: 0;
+    transform: translateY(16px);
+}
+
+.zuno-reveal.is-pending.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: opacity .5s var(--zuno-ease), transform .5s var(--zuno-ease);
+}
+
+@media (max-width: 991.98px) {
+    .zuno-hero .zuno-hero__inner { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 40px; padding-bottom: 40px; }
+    .zuno-hero__visual { display: none; }
+    .zuno-grid, .zuno-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 767.98px) {
+    .zuno-section { padding: 40px 0; }
+    .zuno-grid, .zuno-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .zuno-pcard__body { padding: 10px 12px 12px; }
+    .zuno-pcard__title { font-size: 14px; }
+    .zuno-pcard__price { font-size: 15px; }
+    .zuno-pcard__go { display: none; }
+    .zuno-cats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .zuno-search:not(.zuno-search--inline) { padding-left: 42px; }
+    .zuno-search .zuno-btn--sm { padding: 0 14px; }
+    .zuno-toolbar__count { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* ==========================================================================
+   Buyurtma: yakuniy narx, tugagan mahsulot, kuzatish, shartlar
+   ========================================================================== */
+body { background: var(--zuno-page); }
+
+.zuno-total {
+    margin: 4px 0 16px;
+    padding: 14px 16px;
+    background: var(--zuno-surface);
+    border: 1px solid var(--zuno-border);
+    border-radius: var(--zuno-radius);
+}
+.zuno-total > div { display: flex; justify-content: space-between; gap: 16px; padding: 4px 0; }
+.zuno-total dt { font-weight: 500; color: var(--zuno-muted); margin: 0; }
+.zuno-total dd { font-weight: 600; margin: 0; text-align: right; }
+.zuno-total .is-total { margin-top: 6px; padding-top: 10px; border-top: 1px dashed var(--zuno-border-dark); }
+.zuno-total .is-total dt { color: var(--zuno-text); font-weight: 700; }
+.zuno-total .is-total dd { font-size: 1.125rem; font-weight: 800; }
+
+.zuno-soldout { padding: 18px; background: var(--zuno-surface); border-radius: var(--zuno-radius); }
+.zuno-soldout p { color: var(--zuno-muted); margin: 6px 0 14px; }
+
+.zuno-page { max-width: 720px; margin: 0 auto; padding: 40px 16px 64px; }
+.zuno-page h1 { font-size: clamp(1.625rem, 4vw, 2.125rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+.zuno-page__lead { color: var(--zuno-muted); margin-bottom: 24px; }
+.zuno-page h2 { font-size: 1.125rem; font-weight: 700; margin: 24px 0 8px; }
+.zuno-page p, .zuno-page li { line-height: 1.65; }
+
+.zuno-card {
+    background: #fff;
+    border: 1px solid var(--zuno-border);
+    border-radius: var(--zuno-radius-lg);
+    padding: 24px;
+    box-shadow: var(--zuno-shadow);
+}
+.zuno-card + .zuno-card { margin-top: 16px; }
+
+.zuno-track__head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.zuno-track__status { font-weight: 700; color: var(--zuno-accent-text); }
+.zuno-track__meta { color: var(--zuno-muted); margin: 4px 0 20px; }
+.zuno-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; list-style: none; padding: 0; margin: 0; }
+.zuno-steps li { font-size: .8125rem; font-weight: 500; color: var(--zuno-muted); padding-top: 12px; border-top: 4px solid var(--zuno-border); }
+.zuno-steps li.is-done { color: var(--zuno-text); font-weight: 600; border-top-color: var(--zuno-lime-active); }
+
+.zuno-error { text-align: center; padding: 72px 16px; }
+.zuno-error__code { font-size: 4rem; font-weight: 800; color: var(--zuno-accent-text); line-height: 1; }

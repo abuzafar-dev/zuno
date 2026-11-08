@@ -1,0 +1,29 @@
+{% comment %}
+Forma maydoni: yorliq + input + (ixtiyoriy) yordam matni + maydon xatolari.
+  id, name, label, type (text|tel|password), placeholder, autocomplete, value
+  errors   — shu maydonning xatolari (messages|tagged:"field-<name>")
+  help     — yordam matni (ixtiyoriy)
+  input_id_extra — qo'shimcha klasslar (masalan, telefon maskasi uchun)
+type="password" bo'lsa, ko'rsatish/yashirish tugmasi qo'shiladi.
+Xato bo'lsa input aria-invalid="true" oladi va aria-describedby orqali xatoga bog'lanadi.
+{% endcomment %}<div class="zuno-field">
+    <label class="zuno-label" for="{{ id }}">{{ label }}</label>
+    <div class="{% if type == 'password' %}zuno-input-wrap{% endif %}">
+        <input class="zuno-input" type="{{ type|default:'text' }}" id="{{ id }}" name="{{ name }}"
+               {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+               {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+               {% if inputmode %}inputmode="{{ inputmode }}"{% endif %}
+               {% if value %}value="{{ value }}"{% endif %}
+               {% if errors %}aria-invalid="true"{% endif %}
+               {% if errors or help %}aria-describedby="{% if help %}{{ id }}-help{% endif %}{% if errors and help %} {% endif %}{% if errors %}{{ id }}-error{% endif %}"{% endif %}>
+        {% if type == 'password' %}
+            <button type="button" class="zuno-pw-toggle" aria-controls="{{ id }}" aria-pressed="false"
+                    aria-label="Parolni ko'rsatish">
+                <svg class="zuno-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="zuno-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18M10.6 5.1A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.1M6.6 6.6A17.4 17.4 0 0 0 2 12s3.6 7 10 7a10.4 10.4 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+            </button>
+        {% endif %}
+    </div>
+    {% if help %}<p class="zuno-help" id="{{ id }}-help">{{ help }}</p>{% endif %}
+    {% include "components/form_alert.html" with items=errors id=id|add:"-error" %}
+</div>

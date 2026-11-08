@@ -1,0 +1,135 @@
+{% extends 'base/base.html' %}
+{% load order_extras static %}
+{% block title %}{% if is_search %}«{{ query }}» qidiruvi — ZUNO{% else %}{{ block.super }}{% endif %}{% endblock %}
+
+{% block body %}
+{% if is_search %}
+
+    <!-- Qidiruv natijalari -->
+    <section class="zuno-section">
+        <div class="container">
+            <div class="zuno-section-head">
+                <div>
+                    <p class="zuno-eyebrow">Qidiruv</p>
+                    {% if query %}
+                        <h1 class="zuno-section-title">«{{ query }}» bo'yicha natijalar</h1>
+                        <p class="zuno-section-sub" role="status">{{ products.paginator.count }} ta mahsulot topildi</p>
+                    {% else %}
+                        <h1 class="zuno-section-title">Mahsulot qidirish</h1>
+                    {% endif %}
+                </div>
+                <form class="zuno-search zuno-search--inline" action="{% url 'search_product' %}" method="get" role="search">
+                    <label class="sr-only" for="search-page-input">Mahsulot nomi</label>
+                    <input id="search-page-input" name="product" type="search" value="{{ query }}" placeholder="Masalan: noutbuk" autocomplete="off">
+                    <button type="submit" class="zuno-btn zuno-btn--sm">Qidirish</button>
+                </form>
+            </div>
+
+            {% if products %}
+                <div class="zuno-grid">
+                    {% for product in products %}{% include "components/product_card.html" %}{% endfor %}
+                </div>
+                {% include "components/pagination.html" with page=products params=page_params %}
+            {% else %}
+                <div class="zuno-empty">
+                    <div class="zuno-empty__mark" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                    </div>
+                    <h2>{% if query %}Hech narsa topilmadi{% else %}Qidiruv so'zini kiriting{% endif %}</h2>
+                    <p>{% if query %}Boshqa so'z bilan urinib ko'ring yoki kategoriyalardan tanlang.{% else %}Mahsulot nomini yozing va «Qidirish»ni bosing.{% endif %}</p>
+                    <div class="zuno-chips">
+                        {% for category in categories %}
+                            <a class="zuno-chip" href="{% url 'category_detail' category.slug %}">{{ category.title }}</a>
+                        {% endfor %}
+                    </div>
+                    <a class="zuno-btn zuno-btn--auto" href="{% url 'shop' %}">Barcha mahsulotlar</a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+{% else %}
+
+    <!-- Hero -->
+    <section class="zuno-hero">
+        <div class="container zuno-hero__inner">
+            <div class="zuno-hero__copy">
+                <p class="zuno-eyebrow zuno-eyebrow--dark">ZUNO onlayn do'koni</p>
+                <h1 class="zuno-hero__title">Kerakli narsani toping&nbsp;—<br><span>tez va qulay.</span></h1>
+                <p class="zuno-hero__lead">
+                    {{ products_total }} ta mahsulot, {{ categories|length }} ta kategoriya.
+                    Ro'yxatdan o'tmasdan buyurtma bering — operatorimiz siz bilan bog'lanib, buyurtmani tasdiqlaydi.
+                </p>
+
+                <form class="zuno-search" action="{% url 'search_product' %}" method="get" role="search">
+                    <label class="sr-only" for="hero-search">Mahsulot qidirish</label>
+                    <svg class="zuno-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                    <input id="hero-search" name="product" type="search" placeholder="Nima qidiryapsiz?" autocomplete="off" required>
+                    <button type="submit" class="zuno-btn zuno-btn--sm">Qidirish</button>
+                </form>
+
+                <div class="zuno-hero__actions">
+                    <a class="zuno-btn-ghost" href="{% url 'shop' %}">
+                        Katalogni ko'rish
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Imzo detali: lime Z va eng yangi mahsulotlarning haqiqiy rasmlari -->
+            <div class="zuno-hero__visual" aria-hidden="true">
+                <svg class="zuno-hero__z" viewBox="0 0 100 80"><path d="M24 0H94Q100 0 100 6V9.5L53 57H95L80 74.5Q76 80 70 80H6Q0 80 0 74V70.5L47 23H5L20 5.5Q24 0 30 0Z"/></svg>
+                {% for product in products|slice:":3" %}
+                    {% if product.image %}
+                        <div class="zuno-hero__tile zuno-hero__tile--{{ forloop.counter }}">
+                            <img src="{{ product.image.url }}" alt="" width="240" height="240" {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Kategoriyalar -->
+    <section class="zuno-section" id="kategoriyalar">
+        <div class="container">
+            <div class="zuno-section-head zuno-reveal">
+                <div>
+                    <p class="zuno-eyebrow">Kategoriyalar</p>
+                    <h2 class="zuno-section-title">Bo'limlar bo'yicha xarid</h2>
+                </div>
+            </div>
+            <div class="zuno-cats zuno-reveal">
+                {% for category in categories %}
+                    <a href="{% url 'category_detail' category.slug %}" class="zuno-cat">
+                        <span class="zuno-cat__img">
+                            {% if category.image %}<img src="{{ category.image.url }}" alt="" width="72" height="72" loading="lazy">{% endif %}
+                        </span>
+                        <span class="zuno-cat__title">{{ category.title }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Yangi mahsulotlar -->
+    <section class="zuno-section zuno-section--tint">
+        <div class="container">
+            <div class="zuno-section-head zuno-reveal">
+                <div>
+                    <p class="zuno-eyebrow">Yangi</p>
+                    <h2 class="zuno-section-title">Yangi qo'shilgan mahsulotlar</h2>
+                </div>
+                <a href="{% url 'shop' %}" class="zuno-more">
+                    Barchasi ({{ products_total }})
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+            </div>
+            <div class="zuno-grid zuno-reveal">
+                {% for product in products %}{% include "components/product_card.html" %}{% endfor %}
+            </div>
+        </div>
+    </section>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,379 @@
+{% extends 'base/base.html' %}
+{% load order_extras %}
+{% block title %}{% if category %}{{ category.title }} — {% endif %}ZUNO do'koni{% endblock %}
+
+{% block body %}
+    <style>
+    .products-listing-page {
+        background: #F3F6EC;
+    }
+
+    /* --- Sidebar --- */
+    .sidebar-filters {
+        position: sticky;
+        top: 20px;
+    }
+
+    .filter-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+    }
+
+    .filter-header {
+        background: var(--zuno-panel);
+        color: var(--zuno-text-on-dark);
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .filter-title {
+        color: inherit;
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .mobile-toggle-btn {
+        background: none;
+        border: none;
+        color: var(--zuno-text);
+        font-size: 18px;
+    }
+
+    .filter-body {
+        padding: 8px 0;
+    }
+
+    .categories-nav {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .category-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        color: #334155;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        border-left: 3px solid transparent;
+        transition: all 0.2s ease;
+    }
+
+    .category-link:hover {
+        background: #F8FAF3;
+        color: var(--primary-color);
+    }
+
+    .category-link.active {
+        background: var(--zuno-lime-soft);
+        color: var(--primary-color);
+        border-left-color: var(--primary-color);
+        font-weight: 700;
+    }
+
+    .category-name {
+        flex: 1;
+    }
+
+    /* --- Page header / breadcrumb --- */
+    .page-header {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px 24px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+    }
+
+    .breadcrumb-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #64748b;
+        margin-bottom: 10px;
+    }
+
+    .breadcrumb-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .breadcrumb-separator {
+        font-size: 11px;
+    }
+
+    .breadcrumb-current {
+        color: #1e293b;
+        font-weight: 600;
+    }
+
+    .page-title {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 800;
+        color: #1e293b;
+    }
+
+    /* --- Product grid --- */
+    .products-grid {
+        margin-top: 20px;
+    }
+
+    .product-card {
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-image-wrapper {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        overflow: hidden;
+        background: #F8FAF3;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .product-info {
+        padding: 14px 16px;
+    }
+
+    .product-title a {
+        text-decoration: none;
+        color: #1e293b;
+        font-size: 15px;
+        font-weight: 600;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .product-price {
+        color: var(--primary-color);
+        font-weight: 700;
+        font-size: 17px;
+        margin: 8px 0 0;
+    }
+
+    /* --- Pagination --- */
+    .pagination-wrapper {
+        display: flex;
+        justify-content: center;
+    }
+
+    .custom-pagination {
+        display: flex;
+        list-style: none;
+        gap: 6px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .custom-pagination .page-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        padding: 0 12px;
+        border-radius: 8px;
+        background: #fff;
+        color: #334155;
+        text-decoration: none;
+        font-weight: 600;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+
+    .custom-pagination .page-item.active .page-link {
+        background: var(--zuno-panel);
+        color: var(--zuno-text);
+    }
+
+    .custom-pagination .page-item.disabled .page-link {
+        color: #cbd5e1;
+        cursor: not-allowed;
+    }
+
+    /* --- Mobile --- */
+    @media (max-width: 991px) {
+        .filter-header {
+            cursor: pointer;
+        }
+
+        .filter-body.collapsed {
+            display: none;
+        }
+    }
+</style>
+    <section class="products-listing-page py-4" style="margin-top: 24px;">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Sidebar Categories -->
+                <div class="col-lg-3">
+                    <aside class="sidebar-filters">
+                        <div class="filter-card">
+                            <div class="filter-header" id="filterToggleBtn">
+                                <h5 class="filter-title">
+                                    <i class="icofont-filter"></i>
+                                    Kategoriyalar
+                                </h5>
+                                <button class="mobile-toggle-btn d-lg-none" type="button">
+                                    <i class="icofont-rounded-down"></i>
+                                </button>
+                            </div>
+                            <div class="filter-body" id="filterBody">
+                                <nav class="categories-nav">
+
+                                    <a href="{% url 'shop' %}{% if page_params %}?{{ page_params }}{% endif %}"
+                                       class="category-link {% if not category %}active{% endif %}"{% if not category %} aria-current="page"{% endif %}>
+                                        <span class="category-name">Barchasi</span>
+                                        <i class="icofont-rounded-right"></i>
+                                    </a>
+                                    {% for cat in categories %}
+                                        <a href="{% url 'category_detail' cat.slug %}{% if page_params %}?{{ page_params }}{% endif %}"
+                                           class="category-link {% if category.slug == cat.slug %}active{% endif %}"{% if category.slug == cat.slug %} aria-current="page"{% endif %}>
+                                            <span class="category-name">{{ cat.title }}</span>
+                                            <i class="icofont-rounded-right"></i>
+                                        </a>
+                                    {% endfor %}
+
+
+                                </nav>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-lg-9">
+                    <!-- Breadcrumb & Title -->
+                    <div class="page-header mb-4">
+                        <div class="breadcrumb-wrapper">
+                            <a href="/" class="breadcrumb-link">
+                                <i class="icofont-home"></i>
+                                Bosh sahifa
+                            </a>
+                            <span class="breadcrumb-separator">
+                                <i class="icofont-thin-right"></i>
+                            </span>
+
+                            <span class="breadcrumb-current">
+                            {% if category %}
+                                {{ category.title }}
+                            {% else %}
+                                Barchasi
+                            {% endif %}
+                            </span>
+
+                        </div>
+
+                        <h1 class="page-title">
+                            {% if category %}
+                                {{ category.title }}
+                            {% else %}
+                                Barcha mahsulotlar
+                            {% endif %}
+
+                        </h1>
+                    </div>
+
+                    <!-- Natijalar soni va saralash (?sort=, sahifalashda saqlanadi) -->
+                    <form class="zuno-toolbar" method="get" data-autosubmit>
+                        <p class="zuno-toolbar__count" role="status">{{ products.paginator.count }} ta mahsulot</p>
+                        <label class="zuno-select">
+                            <span>Saralash:</span>
+                            <select name="sort" aria-label="Saralash">
+                                <option value="new" {% if sort == 'new' %}selected{% endif %}>Eng yangilari</option>
+                                <option value="cheap" {% if sort == 'cheap' %}selected{% endif %}>Avval arzonlari</option>
+                                <option value="expensive" {% if sort == 'expensive' %}selected{% endif %}>Avval qimmatlari</option>
+                            </select>
+                        </label>
+                        <noscript><button type="submit" class="zuno-btn zuno-btn--sm zuno-btn--auto">Qo'llash</button></noscript>
+                    </form>
+
+                    {% if products %}
+                        <div class="zuno-grid zuno-grid--3">
+                            {% for product in products %}{% include "components/product_card.html" %}{% endfor %}
+                        </div>
+                        {% include "components/pagination.html" with page=products params=page_params %}
+                    {% else %}
+                        <div class="zuno-empty">
+                            <h2>Bu bo'limda hozircha mahsulot yo'q</h2>
+                            <p>Boshqa kategoriyani tanlang yoki barcha mahsulotlarni ko'ring.</p>
+                            <a class="zuno-btn zuno-btn--auto" href="{% url 'shop' %}">Barcha mahsulotlar</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile filter toggle
+            const filterHeader = document.getElementById('filterToggleBtn');
+            const filterBody = document.getElementById('filterBody');
+            const toggleBtn = filterHeader.querySelector('.mobile-toggle-btn');
+
+            // Faqat mobile da ishlashi uchun
+            if (window.innerWidth < 992) {
+                // Boshlang'ich holatda yopiq bo'lishi
+                filterBody.classList.add('collapsed');
+
+                filterHeader.addEventListener('click', function () {
+                    filterBody.classList.toggle('collapsed');
+                    filterBody.classList.toggle('show');
+
+                    if (toggleBtn) {
+                        toggleBtn.classList.toggle('active');
+                    }
+                });
+            }
+
+            // Window resize da tekshirish
+            window.addEventListener('resize', function () {
+                if (window.innerWidth >= 992) {
+                    // Desktop da har doim ochiq
+                    filterBody.classList.remove('collapsed');
+                    filterBody.classList.remove('show');
+                    if (toggleBtn) {
+                        toggleBtn.classList.remove('active');
+                    }
+                } else {
+                    // Mobile da yopiq
+                    if (!filterBody.classList.contains('show')) {
+                        filterBody.classList.add('collapsed');
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+
+
+

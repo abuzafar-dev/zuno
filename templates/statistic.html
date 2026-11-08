@@ -1,0 +1,452 @@
+{% extends 'base/base.html' %}
+{% load order_extras %}
+
+
+{% block body %}
+    <style>
+        .sidebar-modern {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: sticky;
+            top: 20px;
+        }
+
+        .user-profile-modern {
+            background: var(--zuno-panel);
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .user-profile-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.4;
+        }
+
+        .user-avatar-modern {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+        }
+
+        .user-info-modern {
+            color: var(--zuno-text);
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .user-info-modern h6 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .user-info-modern p {
+            font-size: 13px;
+            opacity: 0.95;
+            margin-bottom: 4px;
+        }
+
+        .nav-modern {
+            padding: 10px 0;
+        }
+
+        .nav-modern .nav-item {
+            margin: 0;
+        }
+
+        .nav-modern .nav-link {
+            color: #64748b;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            font-size: 15px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .nav-modern .nav-link i {
+            font-size: 20px;
+            margin-right: 12px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-modern .nav-link:hover,
+        .nav-modern .nav-link.active {
+            background: var(--zuno-lime-soft);
+            color: var(--zuno-accent-text);
+            border-left-color: var(--zuno-ink);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-modern {
+                margin-bottom: 20px;
+                position: static;
+            }
+
+            .user-profile-modern {
+                padding: 20px 15px;
+            }
+
+            .user-avatar-modern {
+                width: 80px;
+                height: 80px;
+            }
+
+            .user-info-modern h6 {
+                font-size: 16px;
+            }
+
+            .user-info-modern p {
+                font-size: 12px;
+            }
+
+            .nav-modern .nav-link {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+
+            .nav-modern .nav-link i {
+                font-size: 18px;
+                margin-right: 10px;
+            }
+        }
+
+
+        .stats-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+        }
+
+
+        .tab-switcher {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid #f1f3f9;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 6px;
+            margin-right: 24px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s ease;
+        }
+
+        .tab-btn i {
+            font-size: 18px;
+        }
+
+        .tab-btn:hover {
+            color: var(--zuno-accent-text);
+        }
+
+        .tab-btn.active {
+            color: var(--zuno-accent-text);
+            font-weight: 700;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -2px;
+            height: 2px;
+            background: var(--zuno-lime);
+            border-radius: 2px;
+        }
+
+        /* ---- Table ---- */
+        .stats-table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+        }
+
+        .stats-table thead th {
+            background: var(--zuno-panel);
+            color: var(--zuno-text);
+            font-weight: 600;
+            font-size: 13px;
+            padding: 14px 10px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .stats-table thead th:first-child {
+            border-top-left-radius: 10px;
+        }
+
+        .stats-table thead th:last-child {
+            border-top-right-radius: 10px;
+        }
+
+        .stats-table tbody th,
+        .stats-table tbody td {
+            padding: 22px 10px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 14px;
+            color: #1f2430;
+            border-bottom: 1px solid #f1f3f9;
+        }
+
+        .stats-table tbody td small {
+            display: block;
+            color: #64748B;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .stats-table tbody tr:hover td,
+        .stats-table tbody tr:hover th {
+            background: #f7f8fd;
+        }
+
+        /* ---- "JAMI" total row (inside thead) ---- */
+        .total-row-header td {
+            background: var(--zuno-panel-2);
+            color: var(--zuno-text);
+            font-size: 14px;
+            font-weight: 700;
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: none;
+        }
+
+        /* ---- Pagination ---- */
+        #table-pagination {
+            margin-top: 24px;
+        }
+
+        .pagination-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .pagination-info {
+            background: #f1f3f9;
+            color: var(--primary-color);
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: var(--zuno-panel);
+            color: var(--zuno-text);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: opacity 0.2s ease, transform 0.15s ease;
+        }
+
+        .pagination-btn:hover {
+            opacity: 0.85;
+            color: var(--zuno-text);
+            transform: translateY(-1px);
+        }
+
+        .stats-table tbody td[colspan] {
+            padding: 40px 0;
+            color: #64748B;
+            font-size: 15px;
+        }
+
+        /* ---- Custom horizontal scrollbar (matches reference) ---- */
+        .stats-table-wrapper {
+            scrollbar-color: #878787 #eef0f4;
+            scrollbar-width: thin;
+        }
+
+        .stats-table-wrapper::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        .stats-table-wrapper::-webkit-scrollbar-track {
+            background: #eef0f4;
+            border-radius: 10px;
+        }
+
+        .stats-table-wrapper::-webkit-scrollbar-thumb {
+            background: #878787;
+            border-radius: 10px;
+        }
+    </style>
+    <div class="container market-container" style="margin-top: 40px;">
+        <div class="row">
+            {% include 'base/sidebar.html' %}
+            <div class="col-md-9">
+                <div class="stats-card">
+
+                    <div id="tab-table">
+                        <div class="stats-table-wrapper">
+                            <table class="stats-table">
+                                <thead>
+                                <tr>
+                                    <th>Oqim</th>
+                                    <th>Mahsulot</th>
+                                    <th>Tashrif</th>
+                                    <th>Yangi</th>
+                                                                        <th>Qadoqlash</th>
+                                    <th>Yetkazilmoqda</th>
+                                    <th>Yetkazildi</th>
+                                    <th>Keyin oladi</th>
+                                    <th>Qaytib keldi</th>
+                                    <th>Bekor qilindi</th>
+                                    <th>Hold</th>
+                                    <th>Arxiv</th>
+                                    <th>Yetkazildi<br>soni</th>
+                                </tr>
+                                <tr class="total-row-header">
+                                    <td><strong>JAMI</strong></td>
+                                    <td></td>
+                                    <td><strong>{{ totals.views }}</strong></td>
+                                    <td><strong>{{ totals.new }}</strong></td>
+                                    <td><strong>{{ totals.packing }}</strong></td>
+                                    <td><strong>{{ totals.delivering }}</strong></td>
+                                    <td><strong>{{ totals.delivered }}</strong></td>
+                                    <td><strong>{{ totals.later }}</strong></td>
+                                    <td><strong>{{ totals.returned }}</strong></td>
+                                    <td><strong>{{ totals.cancelled }}</strong></td>
+                                    <td><strong>{{ totals.hold }}</strong></td>
+                                    <td><strong>{{ totals.archive }}</strong></td>
+                                    <td><strong>{{ totals.delivered }}</strong></td>
+                                </tr>
+                                </thead>
+
+                                <tbody id="streams-tbody">
+
+                                {% for fun in funnels %}
+                                    <tr>
+                                        <!-- 1-ustun: OQIM -->
+                                        <td class="text-start" style="padding-left: 20px;">
+                                            <div class="fw-bold text-dark">{{ fun.title }}</div>
+                                            <small class="text-secondary">ID: {{ fun.id }}</small>
+                                        </td>
+
+                                        <!-- 2-ustun: MAHSULOT -->
+                                        <td>
+                                            <div class="fw-medium">{{ fun.product.title }}</div>
+                                        </td>
+
+                                        <!-- 3-ustun: Tashrif -->
+                                        <td>{{ fun.views_count }}</td>
+
+                                        <!-- 4-ustun: Yangi -->
+                                        <td>{{ fun.new_num }}</td>
+
+                                        <!-- 6-ustun: Qadoqlash -->
+                                        <td>{{ fun.packing_num }}</td>
+
+                                        <!-- 7-ustun: Yetkazilmoqda -->
+                                        <td>{{ fun.delivering_num }}</td>
+
+                                        <!-- 8-ustun: Yetkazildi -->
+                                        <td>{{ fun.delivered_num }}</td>
+
+                                        <!-- 9-ustun: Keyin oladi -->
+                                        <td>{{ fun.later_num }}</td>
+
+                                        <!-- 10-ustun: Qaytib keldi -->
+                                        <td>{{ fun.returned_num }}</td>
+
+                                        <!-- 11-ustun: Bekor qilindi -->
+                                        <td>{{ fun.cancelled_num }}</td>
+
+                                        <!-- 12-ustun: Hold -->
+                                        <td>{{ fun.hold_num }}</td>
+
+                                        <!-- 13-ustun: Arxiv -->
+                                        <td>{{ fun.archive_num }}</td>
+
+                                        <!-- 14-ustun: Yetkazildi soni va Summasi -->
+                                        <td>
+                                            <div class="fw-bold">{{ fun.delivered_num }}</div>
+                                            <small>({{ fun.delivered_num }} x {{ fun.product.price|space_number }})</small>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="13" style="padding: 60px 0; text-align: center;">Hozircha oqimlar yo'q</td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        <div id="table-pagination">
+                            <div class="pagination-container">
+                                <span class="pagination-info">{{ funnels.number }} / {{ funnels.paginator.num_pages }}</span>
+
+                                {% if funnels.has_previous %}
+                                    <a href="?page=1" class="pagination-btn" title="Birinchi sahifa">
+                                        <i class="icofont-double-left"></i>
+                                    </a>
+                                    <a href="?page={{ funnels.previous_page_number }}" class="pagination-btn"
+                                       title="Oldingi sahifa">
+                                        <i class="icofont-simple-left"></i>
+                                    </a>
+                                {% endif %}
+
+                                {% if funnels.has_next %}
+                                    <a href="?page={{ funnels.next_page_number }}" class="pagination-btn"
+                                       title="Keyingi sahifa">
+                                        <i class="icofont-simple-right"></i>
+                                    </a>
+                                    <a href="?page={{ funnels.paginator.num_pages }}" class="pagination-btn"
+                                       title="Oxirgi sahifa">
+                                        <i class="icofont-double-right"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

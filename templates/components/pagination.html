@@ -1,0 +1,22 @@
+{% comment %}
+Sahifalash. page - Paginator sahifasi, params - urlencode qilingan qo'shimcha
+parametrlar (masalan "sort=cheap" yoki "product=noutbuk"), sahifa almashganda saqlanadi.
+{% endcomment %}{% if page.paginator.num_pages > 1 %}
+<nav class="zuno-pager" aria-label="Sahifalar">
+    {% if page.has_previous %}
+        <a class="zuno-pager__btn" href="?{% if params %}{{ params }}&amp;{% endif %}page={{ page.previous_page_number }}" aria-label="Oldingi sahifa">‹</a>
+    {% endif %}
+    {% for num in page.paginator.page_range %}
+        {% if num == page.number %}
+            <span class="zuno-pager__btn is-active" aria-current="page">{{ num }}</span>
+        {% elif num > page.number|add:'-3' and num < page.number|add:'3' or num == 1 or num == page.paginator.num_pages %}
+            <a class="zuno-pager__btn" href="?{% if params %}{{ params }}&amp;{% endif %}page={{ num }}">{{ num }}</a>
+        {% elif num == page.number|add:'-3' or num == page.number|add:'3' %}
+            <span class="zuno-pager__gap" aria-hidden="true">…</span>
+        {% endif %}
+    {% endfor %}
+    {% if page.has_next %}
+        <a class="zuno-pager__btn" href="?{% if params %}{{ params }}&amp;{% endif %}page={{ page.next_page_number }}" aria-label="Keyingi sahifa">›</a>
+    {% endif %}
+</nav>
+{% endif %}

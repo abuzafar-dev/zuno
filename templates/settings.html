@@ -1,0 +1,396 @@
+{% extends 'base/base.html' %}
+{% load static order_extras %}
+
+{% block body %}
+
+    <div class="container settings-container" style="margin-top: 40px;">
+        <div class="row">
+
+
+            <style>
+                .sidebar-modern {
+                    background: white;
+                    border-radius: 20px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+                    overflow: hidden;
+                    position: sticky;
+                    top: 20px;
+                }
+
+                .user-profile-modern {
+                    background: var(--zuno-panel);
+                    padding: 30px 20px;
+                    text-align: center;
+                    position: relative;
+                }
+
+                .user-profile-modern::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+                    opacity: 0.4;
+                }
+
+                .user-avatar-modern {
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    border: 4px solid white;
+                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+                    object-fit: cover;
+                    position: relative;
+                    z-index: 1;
+                }
+
+                .user-info-modern {
+                    color: var(--zuno-text);
+                    margin-top: 15px;
+                    position: relative;
+                    z-index: 1;
+                }
+
+                .user-info-modern h6 {
+                    font-size: 18px;
+                    font-weight: 700;
+                    margin-bottom: 8px;
+                }
+
+                .user-info-modern p {
+                    font-size: 13px;
+                    opacity: 0.95;
+                    margin-bottom: 4px;
+                }
+
+                .nav-modern {
+                    padding: 10px 0;
+                }
+
+                .nav-modern .nav-item {
+                    margin: 0;
+                }
+
+                .nav-modern .nav-link {
+                    color: #64748b;
+                    padding: 14px 24px;
+                    display: flex;
+                    align-items: center;
+                    font-weight: 500;
+                    font-size: 15px;
+                    border-left: 3px solid transparent;
+                    transition: all 0.3s ease;
+                }
+
+                .nav-modern .nav-link i {
+                    font-size: 20px;
+                    margin-right: 12px;
+                    width: 24px;
+                    text-align: center;
+                }
+
+                .nav-modern .nav-link:hover,
+                .nav-modern .nav-link.active {
+                    background: var(--zuno-lime-soft);
+                    color: var(--zuno-accent-text);
+                    border-left-color: var(--zuno-ink);
+                }
+
+                @media (max-width: 768px) {
+                    .sidebar-modern {
+                        margin-bottom: 20px;
+                        position: static;
+                    }
+
+                    .user-profile-modern {
+                        padding: 20px 15px;
+                    }
+
+                    .user-avatar-modern {
+                        width: 80px;
+                        height: 80px;
+                    }
+
+                    .user-info-modern h6 {
+                        font-size: 16px;
+                    }
+
+                    .user-info-modern p {
+                        font-size: 12px;
+                    }
+
+                    .nav-modern .nav-link {
+                        padding: 12px 20px;
+                        font-size: 14px;
+                    }
+
+                    .nav-modern .nav-link i {
+                        font-size: 18px;
+                        margin-right: 10px;
+                    }
+                }
+
+                .settings-card {
+                    background: white;
+                    border-radius: 20px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+                    padding: 30px;
+                }
+
+                .settings-header {
+                    margin-bottom: 25px;
+                    padding-bottom: 15px;
+                    border-bottom: 1px solid #F3F6EC;
+                }
+
+                .settings-header h3 {
+                    font-size: 20px;
+                    font-weight: 700;
+                    color: #1e293b;
+                    margin-bottom: 4px;
+                }
+
+                .settings-header p {
+                    color: #64748b;
+                    font-size: 14px;
+                    margin: 0;
+                }
+
+                .settings-card .form-group {
+                    margin-bottom: 18px;
+                }
+
+                .settings-card label {
+                    font-weight: 600;
+                    font-size: 14px;
+                    color: #334155;
+                    margin-bottom: 6px;
+                    display: block;
+                }
+
+                /* Maydonlar ZUNO forma komponenti (zuno.css: .zuno-input) bilan bir xil */
+                .settings-card .form-control {
+                    border-radius: 10px;
+                    border: 1px solid #D1D5DB;
+                    padding: 10px 14px;
+                    font-size: 15px;
+                    color: var(--zuno-text);
+                    transition: border-color .18s, box-shadow .18s;
+                }
+
+                .settings-card input.form-control,
+                .settings-card select.form-control {
+                    height: 48px;
+                }
+
+                .settings-card .form-control:hover {
+                    border-color: #9CA3AF;
+                }
+
+                .settings-card .form-control:focus {
+                    border-color: var(--zuno-ink);
+                    box-shadow: 0 0 0 3px rgba(198, 255, 77, 0.6);
+                }
+
+                .settings-card .zuno-label {
+                    color: var(--zuno-text);
+                }
+
+                .btn-save {
+                    background: var(--zuno-lime);
+                    color: var(--zuno-ink);
+                    border: none;
+                    border-radius: 10px;
+                    padding: 12px 24px;
+                    font-weight: 700;
+                    font-size: 14px;
+                    transition: transform .18s, box-shadow .18s, background-color .18s;
+                }
+
+                .btn-save:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 8px 18px -8px rgba(11, 12, 15, 0.45);
+                }
+
+                .btn-save:active {
+                    transform: none;
+                    box-shadow: none;
+                    background: var(--zuno-lime-active);
+                }
+
+                .btn-save:hover {
+                    color: var(--zuno-ink);
+            background: var(--zuno-lime-hover);
+                    opacity: 0.9;
+                }
+            </style>
+            {% include 'base/sidebar.html' %}
+            <div class="col-md-9">
+
+
+                <!-- Profil ma'lumotlari -->
+                <div class="settings-card mb-4">
+                    <div class="settings-header">
+                        <h3>Sozlamalar</h3>
+                        <p>Profil ma'lumotlaringizni tahrirlang</p>
+                    </div>
+
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="id_first_name">Ism</label>
+                                    <input type="text" name="first_name" id="id_first_name"
+                                           class="form-control "
+                                           value="{{ user.first_name }}">
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="id_last_name">Familiya</label>
+                                    <input type="text" name="last_name" id="id_last_name"
+                                           class="form-control "
+                                           value="{{ user.last_name }}">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="id_region">Viloyat</label>
+                                    <select name="region" id="id_region"
+                                            class="form-control " style="padding: 10px 15px; min-height: 45px;">
+                                        <option value="">Viloyatni tanlang</option>
+                                        {% for region in regions %}
+                                            <option value="{{ region.id }}"
+                                                    {% if user.region.id == region.id %}selected{% endif %}>
+                                                {{ region.title }}
+                                            </option>
+                                        {% endfor %}
+
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="id_district">Tuman / Shahar</label>
+                                    <select name="city" id="id_district" class="form-control"
+                                            style="padding: 10px 15px; min-height: 45px;">
+                                        <option value="">Tumanni tanlang</option>
+                                        {% for district in districts %}
+                                            <option value="{{ district.title }}"
+                                                    {% if user.district.id == district.id %}selected{% endif %}>
+                                                {{ district.title }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_telegram_id">Telegram ID</label>
+                            <input type="text" name="telegram_id" id="id_telegram_id"
+                                   class="form-control" value="{{ user.telegram_id|default:'' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="id_description">Haqida</label>
+                            <textarea name="description" id="id_description" rows="3"
+                                      class="form-control">{{ user.bio|default:'' }}</textarea>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-save">
+                                <i class="icofont-save"></i> Saqlash
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Parol almashtirish -->
+                <div class="settings-card">
+                    <div class="settings-header">
+                        <h3>Parolni o'zgartirish</h3>
+                        <p>Hisobingiz xavfsizligi uchun parolni muntazam yangilang</p>
+                    </div>
+
+                    {% with pw_msgs=messages|tagged:"password_form" %}
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        <input type="hidden" name="_password_change" value="1">
+
+                        {% include "components/field.html" with id="id_current_password" name="current_password" label="Joriy parol" type="password" placeholder="Hozirgi parolingiz" autocomplete="current-password" errors=pw_msgs|tagged:"field-current_password" %}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                {% include "components/field.html" with id="id_new_password" name="new_password" label="Yangi parol" type="password" placeholder="Kamida 8 belgi" autocomplete="new-password" help="Kamida 8 belgi. Faqat raqamlardan iborat yoki juda oddiy parol qabul qilinmaydi." errors=pw_msgs|tagged:"field-new_password" %}
+                            </div>
+                            <div class="col-md-6">
+                                {% include "components/field.html" with id="id_confirm_password" name="confirm_password" label="Yangi parolni tasdiqlang" type="password" placeholder="Yangi parolni qayta kiriting" autocomplete="new-password" errors=pw_msgs|tagged:"field-confirm_password" %}
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-save">
+                                <i class="icofont-key" aria-hidden="true"></i> Parolni o'zgartirish
+                            </button>
+                        </div>
+                    </form>
+                    {% endwith %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const regionSelect = document.getElementById('id_region');
+            const districtSelect = document.getElementById('id_district');
+            const currentCity = "{{ user.district.title|default:'' }}";
+
+            regionSelect.addEventListener('change', function () {
+                const regionId = this.value;
+                districtSelect.innerHTML = '<option value="">Yuklanmoqda...</option>';
+
+                if (!regionId) {
+                    districtSelect.innerHTML = '<option value="">Tumanni tanlang</option>';
+                    return;
+                }
+
+                fetch(`/get-districts/${regionId}/`)
+                    .then(res => res.json())
+                    .then(data => {
+                        districtSelect.innerHTML = '<option value="">Tumanni tanlang</option>';
+                        data.districts.forEach(function (d) {
+                            const opt = document.createElement('option');
+                            opt.value = d.name;
+                            opt.textContent = d.name;
+                            if (d.name === currentCity) {
+                                opt.selected = true;
+                            }
+                            districtSelect.appendChild(opt);
+                        });
+                    })
+                    .catch(() => {
+                        districtSelect.innerHTML = '<option value="">Xatolik yuz berdi</option>';
+                    });
+            });
+        });
+    </script>
+
+{% endblock %}
+
+
+
