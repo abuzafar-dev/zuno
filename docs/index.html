@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZUNO — loyiha taqdimoti</title>
+<meta name="description" content="ZUNO: O'zbekiston uchun hamkorlikka asoslangan onlayn do'kon. Django 6 va PostgreSQL.">
+<meta property="og:image" content="https://abuzafar-dev.github.io/zuno/og.png">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,-apple-system,"Segoe UI",Roboto,sans-serif;background:#FBFCF8;color:#1A1F16;line-height:1.6}
+.w{max-width:1040px;margin:0 auto;padding:0 20px}header{background:#EEF8D8;padding:56px 0 48px}
+.e{font-size:13px;font-weight:700;letter-spacing:.12em;color:#3F6212;text-transform:uppercase;margin:0}
+h1{font-size:clamp(34px,6vw,58px);line-height:1.08;letter-spacing:-.03em;margin:10px 0 14px;font-weight:800}
+.lead{font-size:clamp(17px,2.4vw,20px);max-width:700px;margin:0 0 24px;color:#3A4232}
+.b{display:inline-block;background:#C6FF4D;color:#1A1F16;font-weight:700;padding:12px 20px;border-radius:12px;text-decoration:none;margin:0 8px 8px 0}.b.s{background:#fff;border:1px solid #DCE5CC}
+section{padding:44px 0}h2{font-size:clamp(24px,3.6vw,32px);letter-spacing:-.02em;margin:0 0 18px;line-height:1.2}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}.c{background:#fff;border:1px solid #E3E8D8;border-radius:16px;padding:20px}.c h3{margin:0 0 6px;font-size:18px}.c p{margin:0;color:#4B5563}
+img{max-width:100%;display:block;border-radius:12px;border:1px solid #E3E8D8}.shot{margin-top:18px}figcaption{font-size:14px;color:#566050;margin-top:6px}figure{margin:0}
+.n{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.n div{background:#EEF8D8;border-radius:14px;padding:16px}.n b{display:block;font-size:30px;letter-spacing:-.02em}
+footer{background:#EEF8D8;padding:24px 0;font-size:15px}a{color:#3F6212}
+</style>
+</head>
+<body>
+<header><div class="w">
+  <p class="e">Loyiha taqdimoti</p>
+  <h1>ZUNO: havola orqali sotiladigan onlayn do'kon</h1>
+  <p class="lead">Mijoz hisob ochmasdan buyurtma beradi va mahsulotni olganda to'laydi. Operator qo'ng'iroq bilan tasdiqlaydi. Hamkor yetkazilgan har bir buyurtmadan komissiya oladi.</p>
+  <a class="b" href="https://github.com/abuzafar-dev/zuno">Manba kodi</a><a class="b s" href="https://github.com/abuzafar-dev/zuno/blob/main/docs/ARCHITECTURE.md">Arxitektura</a>
+</div></header>
+<section><div class="w"><figure><img src="screenshots/01-vitrina.png" alt="ZUNO vitrinasi" width="1360" height="820"></figure></div></section>
+<section style="padding-top:0"><div class="w">
+  <h2>Muammo va yechim</h2>
+  <div class="g">
+    <div class="c"><h3>Xaridor oldindan to'lashga ishonmaydi</h3><p>To'lov mahsulot qo'lga tekkanda. Yakuniy summa yetkazish bilan birga buyurtmadan oldin ko'rinadi.</p></div>
+    <div class="c"><h3>Sotuvchi tovar saqlay olmaydi</h3><p>Hamkor shaxsiy havola oladi, omborsiz sotadi, daromadini kabinetda ko'radi.</p></div>
+    <div class="c"><h3>Buyurtma qo'ng'iroqda yo'qoladi</h3><p>Operator paneli navbat, status va mijoz tarixini bitta oynada beradi.</p></div>
+  </div>
+</div></section>
+<section style="padding-top:0"><div class="w">
+  <h2>Uch xil foydalanuvchi, bitta tizim</h2>
+  <div class="g">
+    <figure><img src="screenshots/03-mahsulot.png" alt="Mahsulot sahifasi" loading="lazy"><figcaption>Mijoz: hisobsiz buyurtma</figcaption></figure>
+    <figure><img src="screenshots/05-kabinet.png" alt="Hamkor kabineti" loading="lazy"><figcaption>Hamkor: daromad va havolalar</figcaption></figure>
+    <figure><img src="screenshots/10-operator.png" alt="Operator paneli" loading="lazy"><figcaption>Operator: buyurtmalar navbati</figcaption></figure>
+    <figure><img src="screenshots/12-kuzatish.png" alt="Buyurtmani kuzatish" loading="lazy"><figcaption>Mijoz: buyurtmani kuzatish</figcaption></figure>
+  </div>
+</div></section>
+<section style="padding-top:0"><div class="w">
+  <h2>Muhandislik</h2>
+  <div class="n"><div><b>59</b>avtomatik test</div><div><b>18</b>PostgreSQL versiyasi</div><div><b>3</b>servis moduli</div><div><b>0</b>tashqi CDN</div></div>
+  <div class="g shot">
+    <div class="c"><h3>Pul jurnali</h3><p>Har bir balans o'zgarishi yoziladi. Baza cheklovi komissiyaning ikki marta tushishini to'xtatadi.</p></div>
+    <div class="c"><h3>Ombor qulfi</h3><p>Oxirgi dona faqat bir marta sotiladi. Parallel so'rovlar test bilan tekshirilgan.</p></div>
+    <div class="c"><h3>Status mashinasi</h3><p>Ombor qaytishi va komissiya status o'tishlariga bog'langan. Admin ham shu yo'ldan o'tadi.</p></div>
+  </div>
+</div></section>
+<footer><div class="w">Muallif: <a href="https://github.com/abuzafar-dev">Abuzafar Eshboboyev</a> · Django 6 · PostgreSQL 18 · Docker</div></footer>
+</body>
+</html>

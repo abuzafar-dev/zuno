@@ -1,0 +1,20 @@
+0. Model (DRAW SQL)
+1. Login , Register
+2. Bosh Sahifa
+3. Category Bosilganda productlarni chiqarish
+4. Product detail
+5. order product
+6. Sozlamalar (update)
+7. Mening kabinetim
+8. Market
+9. Havolalar
+10. Statistika
+11. Konkurs
+12. To'lov
+13. Referal
+16. So'rovnomalar
+
+
+14. Operator-order-page
+15. Operator-order-detail
+17. Admin Panel
