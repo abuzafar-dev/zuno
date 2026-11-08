@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: zuno
+          POSTGRES_USER: zuno
+          POSTGRES_PASSWORD: ci-only-password
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U zuno"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 12
+    env:
+      SECRET_KEY: ci-only-secret-key-not-used-anywhere
+      DEBUG: "False"
+      DB_NAME: zuno
+      DB_USER: zuno
+      DB_PASSWORD: ci-only-password
+      DB_HOST: 127.0.0.1
+      DB_PORT: "5432"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv python install 3.14
+      - run: uv sync --frozen
+      - run: uv run python manage.py check --deploy --fail-level ERROR
+      - run: uv run python manage.py makemigrations --check --dry-run
+      - run: uv run python manage.py test
