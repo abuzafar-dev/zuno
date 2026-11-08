@@ -1,0 +1,24 @@
+# Maxfiy / mahalliy ma'lumotlar
+KIRISH_MALUMOTLARI.txt
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+
+# Django
+db.sqlite3
+staticfiles/
+static/
+logs/
+
+# IDE / tool konfiguratsiyalari
+.idea/
+.claude/
+.mcp.json
+
+# OS
+.DS_Store
+backups/

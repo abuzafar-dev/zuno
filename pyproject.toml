@@ -1,0 +1,13 @@
+[project]
+name = "zuno"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "django>=6.0.7",
+    "gunicorn>=23",
+    "pillow>=12.3.0",
+    "psycopg[binary]>=3.2",
+    "python-dotenv>=1.2.3",
+    "redis>=6",
+    "whitenoise>=6.9",
+]
