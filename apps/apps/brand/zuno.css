@@ -23,54 +23,87 @@
 }
 
 :root {
-    /* Brend ranglari */
-    --zuno-lime: #C6FF4D;            /* asosiy aksent: CTA, tanlangan holat, belgi */
-    --zuno-lime-hover: #B4F032;
-    --zuno-lime-active: #A3E01F;
-    --zuno-lime-soft: rgba(198, 255, 77, 0.22);
-    --zuno-ink: #1A1F16;             /* matn va ikonka rangi */
-    --zuno-panel: #EEF8D8;           /* ta'kidlangan och sirt: sarlavha, faol holat */
-    --zuno-panel-2: #E2F2BE;         /* och sirt (hover) */
-    --zuno-page: #FBFCF8;            /* sahifa foni */
-    --zuno-ink-2: #2A3024;
-    --zuno-ink-3: #3A4232;
-    --zuno-text: #151515;            /* och fonda matn */
-    --zuno-text-on-dark: #1A1F16;    /* panel ustidagi matn */
-    --zuno-text-on-dark-muted: #566050;
-    --zuno-surface: #F4F7EC;
-    --zuno-muted: #6B7280;
-    --zuno-border: #E3E8D8;
-    --zuno-border-dark: #DCE5CC;
-    /* Lime oq fonda o'qilmaydi (1.1:1), shuning uchun och fondagi aksent matn
-       uchun to'q yashil ishlatiladi (oq fonda ~7.6:1, WCAG AA/AAA). */
-    --zuno-accent-text: #3F6212;
+    /* Neytrallar: iliq qog'oz ohangi, ko'zni charchatmaydi (Radix sand asosida) */
+    --zuno-page: #E9E7DF;            /* sahifa foni */
+    --zuno-surface: #F1EFE8;         /* jadval sarlavhasi, ichki sirt */
+    --zuno-card: #F8F7F2;            /* karta */
+    --zuno-border: #D8D5CA;
+    --zuno-border-dark: #C4C4B8;
 
-    /* Semantik ranglar (oldingi qiymatlar saqlandi) */
-    --zuno-success: #10B981;
-    --zuno-warning: #F59E0B;
-    --zuno-danger: #EF4444;
-    --zuno-info: #3B82F6;
+    /* Matn */
+    --zuno-ink: #24271F;
+    --zuno-text: #24271F;
+    --zuno-text-2: #3F443A;
+    --zuno-muted: #5B6158;
 
-    /* Tipografiya, radius, soya, fokus */
+    /* Brend: qarag'ay yashil. Yagona aksent, faqat asosiy amallarda */
+    --zuno-pine: #1C3A31;            /* sarlavha, futer, operator menyusi */
+    --zuno-on-pine: #ECEADF;
+    --zuno-on-pine-muted: #B4C2B7;
+    --zuno-primary: #1F6B57;
+    --zuno-primary-hover: #185646;
+    --zuno-primary-active: #134536;
+    --zuno-on-primary: #F8F7F2;
+    --zuno-focus: rgba(31, 107, 87, .28);
+    --zuno-accent-text: #1B6452;
+    --zuno-panel: #DCE4D8;           /* och yashil sirt */
+    --zuno-panel-2: #CCD8C8;
+
+    /* Eski nomlar: yuqoridagi tokenlarga bog'langan */
+    --zuno-lime: var(--zuno-primary);
+    --zuno-lime-hover: var(--zuno-primary-hover);
+    --zuno-lime-active: var(--zuno-primary-active);
+    --zuno-lime-soft: var(--zuno-panel);
+    --zuno-ink-2: var(--zuno-text-2);
+    --zuno-ink-3: var(--zuno-muted);
+    --zuno-text-on-dark: var(--zuno-text);
+    --zuno-text-on-dark-muted: var(--zuno-muted);
+    --zuno-border-dark-2: var(--zuno-border-dark);
+    --primary-color: var(--zuno-primary);
+    --primary-dark: var(--zuno-primary-hover);
+    --primary-light: var(--zuno-panel);
+    --primary-soft: var(--zuno-panel);
+    --success-color: var(--zuno-success);
+    --warning-color: var(--zuno-warning);
+    --danger-color: var(--zuno-danger);
+    --info-color: var(--zuno-info);
+    --dark-bg: var(--zuno-pine);
+    --light-bg: var(--zuno-surface);
+    --text-color: var(--zuno-text);
+    --muted-color: var(--zuno-muted);
+    --border-color: var(--zuno-border);
+    --card-shadow: var(--zuno-shadow);
+    --card-shadow-hover: var(--zuno-shadow-lg);
+
+    /* Holat ranglari: matn va yumshoq fon jufti */
+    --zuno-success: #2B6F4E;
+    --zuno-success-soft: #D5E5D8;
+    --zuno-warning: #84560F;
+    --zuno-warning-soft: #EFE2C6;
+    --zuno-danger: #9B3A2C;
+    --zuno-danger-soft: #F0D9D2;
+    --zuno-info: #2C5C86;
+    --zuno-info-soft: #D6E2EB;
+
+    /* Tipografiya, radius, soya */
     --zuno-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --zuno-radius-sm: 8px;
-    --zuno-radius: 12px;
-    --zuno-radius-lg: 16px;
-    --zuno-shadow: 0 1px 2px rgba(11, 12, 15, 0.05);
-    --zuno-shadow-lg: 0 10px 30px rgba(11, 12, 15, 0.10);
-    --zuno-focus-ring: 0 0 0 3px rgba(198, 255, 77, 0.65), 0 0 0 5px rgba(11, 12, 15, 0.85);
+    --zuno-radius: 10px;
+    --zuno-radius-lg: 14px;
+    --zuno-shadow: 0 1px 2px rgba(36, 39, 31, .05);
+    --zuno-shadow-lg: 0 10px 28px rgba(36, 39, 31, .13);
+    --zuno-focus-ring: 0 0 0 3px var(--zuno-focus);
 }
 
 /* Klaviatura fokusi har doim ko'rinsin */
 :focus-visible {
-    outline: 2px solid var(--zuno-ink);
+    outline: 2px solid var(--zuno-primary);
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px var(--zuno-lime);
 }
 
 ::selection {
     background: var(--zuno-lime);
-    color: var(--zuno-ink);
+    color: var(--zuno-on-primary);
 }
 
 /* Logo komponenti (templates/components/logo.html) */
@@ -131,7 +164,7 @@
     padding: 0 14px;
     font: 500 15px/1.2 var(--zuno-font);
     color: var(--zuno-text);
-    background: #fff;
+    background: var(--zuno-card);
     border: 1px solid #D1D5DB;
     border-radius: 10px;
     box-shadow: none;
@@ -302,7 +335,7 @@
     height: 50px;
     padding: 0 20px;
     font: 700 15px/1 var(--zuno-font);
-    color: var(--zuno-ink);
+    color: var(--zuno-on-primary);
     background: var(--zuno-lime);
     border: 0;
     border-radius: 10px;
@@ -314,12 +347,14 @@
     background: var(--zuno-lime-hover);
     transform: translateY(-1px);
     box-shadow: 0 8px 18px -8px rgba(11, 12, 15, 0.45), 0 0 0 4px rgba(198, 255, 77, 0.18);
+    color: var(--zuno-on-primary);
 }
 
 .zuno-btn:active {
     background: var(--zuno-lime-active);
     transform: translateY(0);
     box-shadow: none;
+    color: var(--zuno-on-primary);
 }
 
 .zuno-btn:disabled,
@@ -431,7 +466,7 @@
     flex: 1 1 auto;
     min-width: 0;
     padding: 36px 40px 32px;
-    background: #fff;
+    background: var(--zuno-card);
 }
 
 .zuno-auth-close {
@@ -550,7 +585,7 @@
 /* Toast xabarlari — yuqoridagi alert bilan bir xil vizual til */
 .app-toast.zuno-toast {
     color: var(--zuno-text);
-    background: #fff;
+    background: var(--zuno-card);
     border: 1px solid var(--zuno-border);
     border-left: 4px solid;
     box-shadow: 0 12px 30px -10px rgba(11, 12, 15, 0.3);
@@ -580,7 +615,7 @@
 
 .zuno-btn.is-loading {
     pointer-events: none;
-    color: var(--zuno-ink);
+    color: var(--zuno-on-primary);
     background: var(--zuno-lime-hover);
     transform: none;
     box-shadow: none;
@@ -668,7 +703,7 @@
     gap: 8px;
     max-width: 540px;
     padding: 6px 6px 6px 46px;
-    background: #fff;
+    background: var(--zuno-card);
     border: 1px solid transparent;
     border-radius: 14px;
     transition: box-shadow .18s, border-color .18s;
@@ -736,7 +771,7 @@
     top: 50%;
     left: 50%;
     width: 78%;
-    fill: var(--zuno-lime);
+    fill: var(--zuno-panel-2);
     transform: translate(-50%, -50%);
     animation: zuno-z-in .7s var(--zuno-ease) both;
 }
@@ -809,7 +844,7 @@
     padding: 12px;
     color: var(--zuno-text);
     text-decoration: none;
-    background: #fff;
+    background: var(--zuno-card);
     border: 1px solid var(--zuno-border);
     border-radius: 14px;
     transition: border-color .18s, transform .18s var(--zuno-ease), box-shadow .18s;
@@ -851,7 +886,7 @@
     overflow: hidden;
     color: var(--zuno-text);
     text-decoration: none;
-    background: #fff;
+    background: var(--zuno-card);
     border: 1px solid var(--zuno-border);
     border-radius: 16px;
     transition: transform .22s var(--zuno-ease), box-shadow .22s var(--zuno-ease), border-color .22s;
@@ -955,7 +990,9 @@
         box-shadow: 0 18px 36px -20px rgba(11, 12, 15, .45);
     }
     .zuno-pcard__link:hover .zuno-pcard__media img { transform: scale(1.04); }
-    .zuno-pcard__link:hover .zuno-pcard__go { background: var(--zuno-lime); transform: translateX(2px); }
+    .zuno-pcard__link:hover .zuno-pcard__go { background: var(--zuno-lime); transform: translateX(2px);
+    color: var(--zuno-on-primary);
+}
 }
 
 .zuno-pcard__link:focus-visible { border-color: var(--zuno-ink); }
@@ -969,7 +1006,7 @@
     gap: 12px;
     margin-bottom: 18px;
     padding: 10px 12px 10px 16px;
-    background: #fff;
+    background: var(--zuno-card);
     border: 1px solid var(--zuno-border);
     border-radius: 14px;
 }
@@ -990,7 +1027,7 @@
     padding: 0 34px 0 12px;
     font: 600 14px var(--zuno-font);
     color: var(--zuno-text);
-    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23151515' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
+    background: var(--zuno-card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23151515' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
     border: 1px solid #D1D5DB;
     border-radius: 10px;
     -webkit-appearance: none;
@@ -1002,7 +1039,7 @@
 
 select.zuno-input {
     padding-right: 36px;
-    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23151515' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center;
+    background: var(--zuno-card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23151515' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center;
     cursor: pointer;
 }
 
@@ -1025,7 +1062,7 @@ select.zuno-input {
     font-weight: 700;
     color: var(--zuno-text);
     text-decoration: none;
-    background: #fff;
+    background: var(--zuno-card);
     border: 1px solid var(--zuno-border);
     border-radius: 10px;
     transition: border-color .15s, background-color .15s;
@@ -1073,7 +1110,7 @@ select.zuno-input {
     font-weight: 600;
     color: var(--zuno-text);
     text-decoration: none;
-    background: #fff;
+    background: var(--zuno-card);
     border: 1px solid var(--zuno-border);
     border-radius: 999px;
     transition: border-color .15s, background-color .15s;
@@ -1102,7 +1139,7 @@ select.zuno-input {
     justify-content: center;
     width: 40px;
     height: 40px;
-    color: var(--zuno-ink);
+    color: var(--zuno-on-primary);
     background: var(--zuno-lime);
     border-radius: 50%;
 }
@@ -1171,7 +1208,6 @@ select.zuno-input {
 /* ==========================================================================
    Buyurtma: yakuniy narx, tugagan mahsulot, kuzatish, shartlar
    ========================================================================== */
-body { background: var(--zuno-page); }
 
 .zuno-total {
     margin: 4px 0 16px;
@@ -1197,7 +1233,7 @@ body { background: var(--zuno-page); }
 .zuno-page p, .zuno-page li { line-height: 1.65; }
 
 .zuno-card {
-    background: #fff;
+    background: var(--zuno-card);
     border: 1px solid var(--zuno-border);
     border-radius: var(--zuno-radius-lg);
     padding: 24px;
@@ -1214,3 +1250,8 @@ body { background: var(--zuno-page); }
 
 .zuno-error { text-align: center; padding: 72px 16px; }
 .zuno-error__code { font-size: 4rem; font-weight: 800; color: var(--zuno-accent-text); line-height: 1; }
+
+/* Bosh sahifa: panel foni, yumshoq rasm chegaralari */
+.zuno-hero { background: var(--zuno-panel); }
+.zuno-hero__tile { border: 1px solid var(--zuno-border-dark) !important; box-shadow: var(--zuno-shadow-lg) !important; }
+.zuno-section--tint { background: transparent; }

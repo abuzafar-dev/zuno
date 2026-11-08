@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% load order_extras %}
+{% block title %}{% block page_title %}Kabinet{% endblock %} — ZUNO{% endblock %}
+
+{% block body %}
+<div class="cab">
+    {% include 'base/sidebar.html' %}
+    <main class="cab-main">
+        <header class="cab-head">
+            <div>
+                <h1>{% block heading %}{% endblock %}</h1>
+                <p>{% block subheading %}{% endblock %}</p>
+            </div>
+            {% block head_actions %}{% endblock %}
+        </header>
+        {% block content %}{% endblock %}
+    </main>
+</div>
+{% block page_scripts %}{% endblock %}
+{% endblock %}

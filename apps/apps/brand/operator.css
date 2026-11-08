@@ -7,29 +7,29 @@
 /* ---------- 1. Ranglar va o'lchovlar ---------- */
 :root {
     /* ZUNO tokenlari: apps/brand/zuno.css */
-    --brand: #3F6212;
-    --brand-2: #4D7518;
+    --brand: var(--zuno-primary);
+    --brand-2: var(--zuno-primary-hover);
     --brand-soft: rgba(198, 255, 77, 0.35);
 
-    --bg: #F3F6EC;
+    --bg: var(--zuno-page);
     --surface: #ffffff;
 
-    --ink: #0f172a;
-    --ink-2: #475569;
-    --muted: #64748B;
+    --ink: var(--zuno-text);
+    --ink-2: var(--zuno-text-2);
+    --muted: var(--zuno-muted);
 
-    --line: #E3E8D8;
-    --line-soft: #eef2f7;
+    --line: var(--zuno-border);
+    --line-soft: var(--zuno-border);
 
-    --ok: #10b981;
-    --warn: #f59e0b;
-    --danger: #ef4444;
-    --info: #0ea5e9;
+    --ok: var(--zuno-success);
+    --warn: var(--zuno-warning);
+    --danger: var(--zuno-danger);
+    --info: var(--zuno-info);
 
-    --radius: 18px;
-    --radius-sm: 12px;
-    --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-    --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.06);
+    --radius: var(--zuno-radius-lg);
+    --radius-sm: var(--zuno-radius-sm);
+    --shadow: var(--zuno-shadow);
+    --shadow-sm: var(--zuno-shadow);
 
     --sidebar-w: 264px;
     --topbar-h: 68px;
@@ -49,7 +49,7 @@ body {
 body.op-body {
     background: var(--bg);
     color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: var(--zuno-font);
     font-size: 14px;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
@@ -162,7 +162,7 @@ table {
     height: 42px;
     border-radius: 50%;
     background: var(--zuno-lime);
-    color: var(--zuno-ink);
+    color: var(--zuno-on-primary);
     font-weight: 700;
 }
 
@@ -242,7 +242,7 @@ table {
 
 .op-nav a.is-active {
     background: var(--zuno-lime);
-    color: var(--zuno-ink);
+    color: var(--zuno-on-primary);
     box-shadow: 0 6px 18px rgba(11, 12, 15, 0.17);
 }
 
@@ -328,7 +328,7 @@ table {
     padding: 8px;
     border: 1px solid var(--line);
     border-radius: 10px;
-    background: #fff;
+    background: var(--zuno-card);
     color: var(--ink-2);
     line-height: 0;
 }
@@ -361,7 +361,7 @@ table {
     gap: 8px;
     padding: 8px 14px;
     border-radius: 10px;
-    background: #F8FAF3;
+    background: var(--zuno-surface);
     color: var(--ink-2);
     font-size: 13px;
     font-weight: 600;
@@ -381,7 +381,7 @@ table {
     padding: 7px 14px 7px 10px;
     border: 1px solid var(--line);
     border-radius: 30px;
-    background: #fff;
+    background: var(--zuno-card);
     color: var(--ink-2);
     font-size: 13px;
     font-weight: 600;
@@ -404,7 +404,7 @@ table {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: #fff;
+    background: var(--zuno-card);
     transition: left 0.2s ease;
 }
 
@@ -482,7 +482,7 @@ table {
     padding: 10px 16px;
     border: 1px solid transparent;
     border-radius: 10px;
-    background: #F3F6EC;
+    background: var(--zuno-surface);
     color: var(--ink-2);
     font-size: 13px;
     font-weight: 600;
@@ -496,7 +496,7 @@ table {
 }
 
 .btn:hover {
-    background: #E3E8D8;
+    background: var(--zuno-border);
 }
 
 .btn:active {
@@ -505,7 +505,7 @@ table {
 
 .btn-primary {
     background: var(--zuno-lime);
-    color: var(--zuno-ink);
+    color: var(--zuno-on-primary);
 }
 
 .btn-primary:hover {
@@ -515,12 +515,12 @@ table {
 
 .btn-ghost {
     border-color: var(--line);
-    background: #fff;
+    background: var(--zuno-card);
 }
 
 .btn-ghost:hover {
     border-color: var(--brand);
-    background: #fff;
+    background: var(--zuno-card);
     color: var(--brand);
 }
 
@@ -553,7 +553,7 @@ table {
     display: inline-block;
     padding: 5px 12px;
     border-radius: 20px;
-    background: #F3F6EC;
+    background: var(--zuno-surface);
     color: var(--ink-2);
     font-size: 12px;
     font-weight: 600;
@@ -597,8 +597,8 @@ table {
 }
 
 .status-badge.status-archive {
-    background: #F3F6EC;
-    color: #64748b;
+    background: var(--zuno-surface);
+    color: var(--zuno-muted);
 }
 
 /* ---------- 9. Filtrlar paneli ---------- */
@@ -633,7 +633,7 @@ table {
     padding: 10px 14px 10px 40px;
     border: 1px solid var(--line);
     border-radius: 10px;
-    background: #F8FAF3;
+    background: var(--zuno-surface);
     color: var(--ink);
     font-size: 13px;
     outline: none;
@@ -642,7 +642,7 @@ table {
 
 .op-search input:focus {
     border-color: var(--brand);
-    background: #fff;
+    background: var(--zuno-card);
     box-shadow: 0 0 0 3px var(--brand-soft);
 }
 
@@ -653,7 +653,7 @@ table {
     padding: 2px 7px;
     border: 1px solid var(--line);
     border-radius: 6px;
-    background: #fff;
+    background: var(--zuno-card);
     color: var(--muted);
     font-family: inherit;
     font-size: 11px;
@@ -664,7 +664,7 @@ table {
     padding: 10px 34px 10px 13px;
     border: 1px solid var(--line);
     border-radius: 10px;
-    background: #F8FAF3 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 11px center/15px;
+    background: var(--zuno-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 11px center/15px;
     color: var(--ink-2);
     font-size: 13px;
     font-weight: 500;
@@ -708,7 +708,7 @@ table {
 }
 
 .op-tab:hover {
-    background: #F3F6EC;
+    background: var(--zuno-surface);
 }
 
 .op-tab.is-active {
@@ -720,7 +720,7 @@ table {
 .op-tab i {
     padding: 1px 8px;
     border-radius: 20px;
-    background: #E3E8D8;
+    background: var(--zuno-border);
     color: var(--ink-2);
     font-size: 11px;
     font-style: normal;
@@ -763,7 +763,7 @@ table {
 }
 
 .op-table thead th {
-    background: #F8FAF3;
+    background: var(--zuno-surface);
     color: var(--ink-2);
     font-size: 11px;
     font-weight: 700;
@@ -802,7 +802,7 @@ table {
 }
 
 .op-table tbody tr:hover {
-    background: #F8FAF3;
+    background: var(--zuno-surface);
 }
 
 .op-table tbody tr:last-child td {
@@ -934,7 +934,7 @@ tr.op-no-result:hover {
     padding: 0 9px;
     border: 1px solid var(--line);
     border-radius: 9px;
-    background: #fff;
+    background: var(--zuno-card);
     color: var(--ink-2);
     font-size: 13px;
     font-weight: 600;
@@ -982,7 +982,7 @@ tr.op-no-result:hover {
     padding: 11px 14px;
     border: 1px solid var(--line);
     border-radius: 10px;
-    background: #F8FAF3;
+    background: var(--zuno-surface);
     color: var(--ink);
     font-family: inherit;
     font-size: 13.5px;
@@ -993,7 +993,7 @@ tr.op-no-result:hover {
 .op-input:focus,
 .op-textarea:focus {
     border-color: var(--brand);
-    background: #fff;
+    background: var(--zuno-card);
     box-shadow: 0 0 0 3px var(--brand-soft);
 }
 
@@ -1013,7 +1013,7 @@ tr.op-no-result:hover {
     padding: 11px 36px 11px 14px;
     border: 1px solid var(--line);
     border-radius: 10px;
-    background: #F8FAF3 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center/16px;
+    background: var(--zuno-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center/16px;
     color: var(--ink);
     font-family: inherit;
     font-size: 13.5px;
@@ -1024,7 +1024,7 @@ tr.op-no-result:hover {
 
 .op-field-select:focus {
     border-color: var(--brand);
-    background-color: #fff;
+    background-color: var(--zuno-card);
     box-shadow: 0 0 0 3px var(--brand-soft);
 }
 
@@ -1057,7 +1057,7 @@ tr.op-no-result:hover {
     padding: 6px 12px;
     border: 1px dashed var(--line);
     border-radius: 20px;
-    background: #fff;
+    background: var(--zuno-card);
     color: var(--ink-2);
     font-size: 12px;
     font-weight: 500;
@@ -1092,7 +1092,7 @@ tr.op-no-result:hover {
     padding: 12px 8px;
     border: 1.5px solid var(--line);
     border-radius: var(--radius-sm);
-    background: #fff;
+    background: var(--zuno-card);
     color: var(--ink-2);
     font-size: 12.5px;
     font-weight: 600;
@@ -1161,8 +1161,8 @@ tr.op-no-result:hover {
 }
 
 .op-status-opt.s-archive input:checked + span {
-    background: #F3F6EC;
-    color: #64748b;
+    background: var(--zuno-surface);
+    color: var(--zuno-muted);
 }
 
 /* ---------- 16. Buyurtma sahifasi ---------- */
@@ -1227,7 +1227,7 @@ tr.op-no-result:hover {
     padding: 24px;
     border-radius: var(--radius);
     background: var(--zuno-lime);
-    color: var(--zuno-ink);
+    color: var(--zuno-on-primary);
     box-shadow: 0 12px 30px rgba(11, 12, 15, 0.14);
 }
 
@@ -1284,12 +1284,12 @@ tr.op-no-result:hover {
 }
 
 .btn-white {
-    background: #fff;
+    background: var(--zuno-card);
     color: var(--brand-2);
 }
 
 .btn-white:hover {
-    background: #F8FAF3;
+    background: var(--zuno-surface);
     color: var(--brand-2);
 }
 
@@ -1308,7 +1308,7 @@ tr.op-no-result:hover {
     height: 108px;
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
-    background: #F8FAF3;
+    background: var(--zuno-surface);
     color: #cbd5e1;
     overflow: hidden;
 }
@@ -1351,14 +1351,14 @@ tr.op-no-result:hover {
     width: 36px;
     height: 38px;
     border: none;
-    background: #F8FAF3;
+    background: var(--zuno-surface);
     color: var(--ink-2);
     font-size: 18px;
     line-height: 1;
 }
 
 .op-qty button:hover {
-    background: #E3E8D8;
+    background: var(--zuno-border);
     color: var(--brand);
 }
 
@@ -1368,7 +1368,7 @@ tr.op-no-result:hover {
     border: none;
     border-right: 1px solid var(--line);
     border-left: 1px solid var(--line);
-    background: #fff;
+    background: var(--zuno-card);
     color: var(--ink);
     font-family: inherit;
     font-size: 14px;
@@ -1495,7 +1495,7 @@ tr.op-no-result:hover {
     margin-top: 6px;
     padding: 10px 12px;
     border-radius: 10px;
-    background: #F8FAF3;
+    background: var(--zuno-surface);
     color: var(--ink-2);
     font-size: 12.5px;
     line-height: 1.55;
@@ -1524,7 +1524,7 @@ tr.op-no-result:hover {
     max-height: 90vh;
     overflow-y: auto;
     border-radius: var(--radius);
-    background: #fff;
+    background: var(--zuno-card);
     box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
     animation: op-pop 0.18s ease-out;
 }
@@ -1597,7 +1597,7 @@ tr.op-no-result:hover {
     padding: 14px 16px;
     border-left: 4px solid var(--brand);
     border-radius: 12px;
-    background: #fff;
+    background: var(--zuno-card);
     box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16);
     font-size: 13.5px;
     animation: op-slide 0.22s ease-out;
@@ -1771,7 +1771,7 @@ tr.op-no-result:hover {
     padding: 16px 18px;
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
-    background: #fff;
+    background: var(--zuno-card);
     color: var(--ink-2);
     font-size: 13px;
     line-height: 1.6;
@@ -1907,3 +1907,24 @@ tr.op-no-result:hover {
 
 /* Och fon uchun ko'rinadigan hisoblagich */
 .op-nav-count.is-hot { background: #B91C1C !important; color: #fff !important; }
+
+
+/* Operator menyusi vitrina sarlavhasi bilan bir xil rangda */
+.op-sidebar {
+    --zuno-text: var(--zuno-on-pine);
+    --zuno-text-on-dark: var(--zuno-on-pine);
+    --zuno-text-on-dark-muted: var(--zuno-on-pine-muted);
+    --zuno-panel-2: rgba(255, 255, 255, .1);
+    --zuno-accent-text: var(--zuno-on-pine);
+    background: var(--zuno-pine);
+    color: var(--zuno-on-pine-muted);
+}
+.op-sidebar .op-me-avatar { background: rgba(255, 255, 255, .14); color: var(--zuno-on-pine); }
+.op-nav a.is-active { background: rgba(255, 255, 255, .14); color: var(--zuno-on-pine); box-shadow: none; }
+.op-nav-title, .op-brand-text span, .op-me-info span { color: var(--zuno-on-pine-muted); }
+.op-sidebar-foot, .op-sidebar-foot a, .op-sidebar-foot button { color: var(--zuno-on-pine-muted); }
+.op-pool-hero, .op-pool-hero h2 { color: var(--zuno-ink); }
+.op-card { border: 1px solid var(--zuno-border); box-shadow: none; background: var(--zuno-card); }
+.op-call { --zuno-text: var(--zuno-on-pine); background: var(--zuno-pine); color: var(--zuno-on-pine); }
+.op-call .op-call-who h3, .op-call .op-call-phone { color: var(--zuno-on-pine); }
+.op-topbar { background: var(--zuno-card); border-bottom: 1px solid var(--zuno-border); }

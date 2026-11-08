@@ -12,6 +12,8 @@ Butun karta bitta havola: klaviatura va sensorli ekranda ham ishlaydi, hover sha
             {% endif %}
             {% if product.stock_quantity == 0 %}
                 <span class="zuno-pcard__badge is-out">Tugagan</span>
+            {% elif product.stock_quantity <= 3 %}
+                <span class="zuno-pcard__badge is-low">{{ product.stock_quantity }} dona qoldi</span>
             {% endif %}
         </div>
         <div class="zuno-pcard__body">

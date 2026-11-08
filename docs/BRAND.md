@@ -4,7 +4,8 @@
 
 | Fayl | Qayerda ishlatiladi |
 |---|---|
-| `zuno-logo-on-light.svg` | Sayt sarlavhasi (navbar), futer, kirish oynasi |
+| `zuno-logo-on-dark.svg` | Sayt sarlavhasi va futer |
+| `zuno-logo-on-light.svg` | Kirish oynasi |
 | `zuno-symbol.svg` | Faqat Z belgisi: operator paneli yon menyusi |
 | `zuno-app-icon.svg` | Qorong'i plashkadagi Z: SVG favicon, juda tor ekranlarda navbar |
 | `favicon.ico`, `favicon-32.png` | Brauzer yorlig'i |
@@ -18,7 +19,8 @@
 Shablonlarda logoni qo'lda yozmang — komponentdan foydalaning:
 
 ```django
-{% include "components/logo.html" with on="light" height=30 %}
+{% include "components/logo.html" with on="dark" height=30 %}   {# qarag'ay fon #}
+{% include "components/logo.html" with on="light" height=40 %}  {# och fon #}
 {% include "components/logo.html" with compact=True height=32 %} {# faqat belgi #}
 ```
 
@@ -30,23 +32,22 @@ va `zuno-og.svg` dan yaratilgan; SVG o'zgarsa, PNG'larni qayta eksport qiling.
 
 | Token | Qiymat | Vazifasi |
 |---|---|---|
-| `--zuno-lime` | `#C6FF4D` | Asosiy CTA tugmalari, belgi |
-| `--zuno-panel` | `#EEF8D8` | Sarlavha, futer, faol holat foni |
-| `--zuno-panel-2` | `#E2F2BE` | Panel hover holati |
-| `--zuno-page` | `#FBFCF8` | Sahifa foni |
-| `--zuno-surface` | `#F4F7EC` | Ikkinchi darajali och sirt |
-| `--zuno-ink` / `--zuno-text` | `#1A1F16` / `#151515` | Asosiy matn |
-| `--zuno-accent-text` | `#3F6212` | Och fondagi aksent matn |
-| `--zuno-muted` | `#6B7280` | Yordamchi matn |
-| `--zuno-border` | `#E3E8D8` | Chegaralar |
+| `--zuno-page` | `#E9E7DF` | Sahifa foni (iliq qog'oz) |
+| `--zuno-surface` | `#F1EFE8` | Ichki sirt, jadval sarlavhasi |
+| `--zuno-card` | `#F8F7F2` | Karta |
+| `--zuno-pine` | `#1C3A31` | Sarlavha, futer, operator menyusi |
+| `--zuno-primary` | `#1F6B57` | Asosiy tugma, faol holat (yagona aksent) |
+| `--zuno-panel` | `#DCE4D8` | Yumshoq yashil sirt |
+| `--zuno-text` | `#24271F` | Asosiy matn |
+| `--zuno-muted` | `#5B6158` | Yordamchi matn |
+| `--zuno-border` | `#D8D5CA` | Chegaralar |
+
+Yangi sahifa uchun `apps/brand/ui.css` komponentlaridan foydalaning (`ui-card`, `ui-stat`, `ui-table`, `ui-chip`, `ui-badge`) va kabinet sahifalarini `base/cabinet.html` dan meros oling. Sahifaga alohida rang yoki soya yozilmaydi.
 
 Qoidalar:
 
-- Lime fonda matn har doim qora (`--zuno-ink`), hech qachon oq emas.
-- Dizayn faqat och rangda. Matn kontrasti kamida 4.5:1 bo'lishi kerak.
-- Lime'ni oq fonda matn yoki ingichka chiziq sifatida ishlatmang — kontrast ~1.1:1.
-- Muvaffaqiyat/ogohlantirish/xato ranglari va buyurtma statuslari ranglari semantik,
-  ular brend rangiga almashtirilmagan.
+- Oppoq fon va neon ranglar ishlatilmaydi. Matn kontrasti kamida 4.5:1 bo'lishi kerak.
+- Holat ranglari semantik: har biri matn va yumshoq fon jufti.
 
 ## Domen ko'chirish ro'yxati (tasdiq talab qilinadi)
 

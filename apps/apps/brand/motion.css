@@ -1,0 +1,121 @@
+/* ==========================================================================
+   ZUNO — jonli harakatlar
+   Yashirish faqat motion.js qo'shadigan klass orqali: skript ishlamasa ham
+   kontent ko'rinadi. "Harakatni kamaytirish" sozlamasi hurmat qilinadi.
+   ========================================================================== */
+
+:root { --mo-ease: cubic-bezier(.2, .8, .2, 1); }
+
+/* Sarlavha aylantirilganda yopishib turadi va soya oladi */
+.modern-header { position: sticky; top: 0; z-index: 1000; transition: box-shadow .25s; }
+.modern-header.is-scrolled { box-shadow: 0 6px 18px rgba(20, 40, 33, .28); }
+
+/* Kartalar navbat bilan paydo bo'ladi */
+.mo-wait { opacity: 0; transform: translateY(22px) scale(.98); }
+.mo-in {
+    opacity: 1;
+    transform: none;
+    transition: opacity .5s var(--mo-ease), transform .5s var(--mo-ease);
+    transition-delay: var(--mo-delay, 0ms);
+}
+
+/* Bosh sahifa: suzuvchi rasmlar va almashuvchi so'z */
+.zuno-hero__tile { transition: translate .3s ease-out; translate: var(--mo-x, 0) var(--mo-y, 0); }
+.zuno-hero__tile img { animation: mo-float 5s ease-in-out infinite; }
+.zuno-hero__tile--2 img { animation-delay: -1.6s; }
+.zuno-hero__tile--3 img { animation-delay: -3.1s; }
+@keyframes mo-float { 50% { transform: translateY(-10px); } }
+
+[data-rotate] { display: inline-block; transition: opacity .28s, transform .28s var(--mo-ease); }
+[data-rotate].is-out { opacity: 0; transform: translateY(14px); }
+
+/* Afzalliklar lentasi */
+.mo-ticker { overflow: hidden; background: var(--zuno-panel-2); padding: 11px 0; }
+.mo-ticker__track { display: flex; width: max-content; animation: mo-ticker 32s linear infinite; }
+.mo-ticker:hover .mo-ticker__track { animation-play-state: paused; }
+.mo-ticker__group { display: flex; flex: none; }
+.mo-ticker__item { padding: 0 28px; font-weight: 700; font-size: .9375rem; color: var(--zuno-ink); white-space: nowrap; }
+.mo-ticker__item::before { content: "●"; margin-right: 12px; font-size: .625rem; vertical-align: middle; color: var(--zuno-accent-text); }
+@keyframes mo-ticker { to { transform: translateX(-50%); } }
+
+/* Bosilganda javob beradigan tugmalar */
+.zuno-btn, .product-btn, .action-btn, .btn, .op-btn, .tab-btn {
+    transition: transform .16s var(--mo-ease), box-shadow .2s, background-color .2s, filter .2s;
+}
+.zuno-btn:active, .product-btn:active, .action-btn:active, .btn:active, .op-btn:active { transform: scale(.96); }
+
+.pd-order .zuno-btn { position: relative; overflow: hidden; }
+.pd-order .zuno-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .22) 50%, transparent 70%);
+    transform: translateX(-120%);
+    animation: mo-shine 3.6s ease-in-out infinite;
+}
+@keyframes mo-shine { 55%, 100% { transform: translateX(120%); } }
+
+/* Kam qolgan mahsulot: haqiqiy ombor qoldig'idan */
+.zuno-pcard__badge.is-low { background: var(--zuno-warning-soft); color: var(--zuno-warning); display: inline-flex; align-items: center; gap: 6px; }
+.zuno-pcard__badge.is-low::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--zuno-warning);
+    animation: mo-pulse 1.5s ease-out infinite;
+}
+@keyframes mo-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(217, 119, 6, .55); }
+    100% { box-shadow: 0 0 0 8px rgba(217, 119, 6, 0); }
+}
+
+/* Jami summa o'zgarganda ta'kidlanadi */
+.mo-bump { animation: mo-bump .38s var(--mo-ease); }
+@keyframes mo-bump { 40% { transform: scale(1.09); color: var(--zuno-accent-text); } }
+
+/* Buyurtma kuzatish: bosqichlar birin-ketin to'ladi */
+.zuno-steps li { position: relative; border-top-color: var(--zuno-border) !important; }
+.zuno-steps li.is-done::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--zuno-lime-active);
+    transform-origin: left;
+    animation: mo-fill .5s var(--mo-ease) both;
+}
+.zuno-steps li.is-done:nth-child(2)::before { animation-delay: .35s; }
+.zuno-steps li.is-done:nth-child(3)::before { animation-delay: .7s; }
+.zuno-steps li.is-done:nth-child(4)::before { animation-delay: 1.05s; }
+@keyframes mo-fill { from { transform: scaleX(0); } }
+
+/* Operator paneli */
+.op-nav-count.is-hot { animation: mo-pulse-red 1.6s ease-out infinite; }
+@keyframes mo-pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(185, 28, 28, .5); }
+    100% { box-shadow: 0 0 0 9px rgba(185, 28, 28, 0); }
+}
+.op-card { animation: mo-rise .45s var(--mo-ease) both; }
+@keyframes mo-rise { from { opacity: 0; transform: translateY(14px); } }
+
+@media (hover: hover) {
+    .zuno-pcard__link:hover { transform: translateY(-6px); box-shadow: var(--zuno-shadow-lg); border-color: var(--zuno-primary); }
+    .zuno-pcard__link:hover .zuno-pcard__media img { transform: scale(1.07); }
+    .zuno-pcard__link:hover .zuno-pcard__go { background: var(--zuno-primary); color: var(--zuno-on-primary); transform: translateX(3px); }
+    .zuno-btn:hover { box-shadow: 0 6px 16px rgba(28, 58, 49, .22); transform: translateY(-1px); }
+    .pd-gallery img, .product-slide img { transition: transform .45s var(--mo-ease); }
+    .product-slide:hover img { transform: scale(1.05); }
+    .op-table tbody tr, tbody tr { transition: background-color .15s; }
+    tbody tr:hover { background-color: var(--zuno-surface); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mo-wait { opacity: 1; transform: none; }
+    .mo-ticker__track, .zuno-hero__tile img, .pd-order .zuno-btn::after, .zuno-pcard__badge.is-low::before,
+    .op-nav-count.is-hot, .op-card { animation: none !important; }
+    .mo-ticker__track { flex-wrap: wrap; width: auto; }
+    .mo-ticker__group[aria-hidden] { display: none; }
+}

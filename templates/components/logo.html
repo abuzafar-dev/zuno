@@ -1,7 +1,8 @@
 {% load static %}{% comment %}
 ZUNO logo komponenti.
-  on="light"  — och fon uchun (qora yozuv, plashkadagi lime belgi)
+  on="light"  — och fon uchun
+  on="dark"   — qarag'ay sarlavha va futer uchun
   compact=True — faqat belgi (ilova ikonkasi)
   height      — piksel balandligi (standart 32)
 width/height atributlari nisbatni saqlaydi va sahifa "sakrashi"ning oldini oladi.
-{% endcomment %}{% if compact %}<img class="zuno-logo" src="{% static 'apps/brand/zuno-app-icon.svg' %}" alt="ZUNO" width="512" height="512" style="--zuno-logo-h: {{ height|default:32 }}px">{% else %}<img class="zuno-logo" src="{% static 'apps/brand/zuno-logo-on-light.svg' %}" alt="ZUNO" width="344" height="60" style="--zuno-logo-h: {{ height|default:32 }}px">{% endif %}
+{% endcomment %}{% if compact %}<img class="zuno-logo" src="{% static 'apps/brand/zuno-app-icon.svg' %}" alt="ZUNO" width="512" height="512" style="--zuno-logo-h: {{ height|default:32 }}px">{% elif on == "dark" %}<img class="zuno-logo" src="{% static 'apps/brand/zuno-logo-on-dark.svg' %}" alt="ZUNO" width="344" height="60" style="--zuno-logo-h: {{ height|default:32 }}px">{% else %}<img class="zuno-logo" src="{% static 'apps/brand/zuno-logo-on-light.svg' %}" alt="ZUNO" width="344" height="60" style="--zuno-logo-h: {{ height|default:32 }}px">{% endif %}

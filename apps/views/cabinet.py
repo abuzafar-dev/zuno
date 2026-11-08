@@ -1,4 +1,5 @@
 import uuid
+from urllib.parse import urlencode
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -64,6 +65,7 @@ class MarketView(View):
             'products': paginate(request, products, 9),
             'selected_category': selected_category,
             'search_query': search_query,
+            'page_params': urlencode({'q': search_query}) if search_query else '',
         })
 
     def post(self, request, category_slug=None):
@@ -120,7 +122,11 @@ class LinksView(View):
         if query:
             link_id = parse_positive_int(query)
             links = links.filter(id=link_id) if link_id else links.filter(title__icontains=query)
-        return render(request, 'links.html', {'links': paginate(request, links, 6), 'query': query})
+        return render(request, 'links.html', {
+            'links': paginate(request, links, 6),
+            'query': query,
+            'page_params': urlencode({'q': query}) if query else '',
+        })
 
 
 @method_decorator(login_required, name='dispatch')
@@ -218,4 +224,5 @@ class SurveyView(View):
             'query': query,
             'status_filter': status_filter,
             'status_choices': Survey.Status.choices,
+            'page_params': urlencode({k: v for k, v in (('q', query), ('status', status_filter)) if v}),
         })
