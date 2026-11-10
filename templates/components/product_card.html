@@ -1,8 +1,11 @@
 {% load static order_extras %}{% comment %}
 Mahsulot kartasi (bosh sahifa, qidiruv, katalog). Faqat haqiqiy ma'lumot:
 nom, narx, rasm va omborda bor-yo'qligi (stock_quantity).
-Butun karta bitta havola: klaviatura va sensorli ekranda ham ishlaydi, hover shart emas.
-{% endcomment %}<article class="zuno-pcard">
+Karta = rasm va nomli havola + alohida amal tugmasi (ichma-ich havola qilinmaydi).
+Tugma to'g'ridan-to'g'ri mahsulot sahifasidagi buyurtma formasiga (#buyurtma) olib boradi.
+Tugagan mahsulotda tugma olib tashlanmaydi, "Batafsil"ga almashadi (Baymard tavsiyasi).
+3D egilish va yaltirash stage.js orqali, faqat sichqonchali qurilmalarda.
+{% endcomment %}<article class="zuno-pcard" data-tilt>
     <a class="zuno-pcard__link" href="{% url 'product-detail' product.slug %}">
         <div class="zuno-pcard__media">
             {% if product.image %}
@@ -19,12 +22,18 @@ Butun karta bitta havola: klaviatura va sensorli ekranda ham ishlaydi, hover sha
         <div class="zuno-pcard__body">
             {% if product.category %}<span class="zuno-pcard__cat">{{ product.category.title }}</span>{% endif %}
             <h3 class="zuno-pcard__title">{{ product.title }}</h3>
-            <div class="zuno-pcard__foot">
-                <span class="zuno-pcard__price">{{ product.price|space_number }} <small>so'm</small></span>
-                <span class="zuno-pcard__go" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </span>
-            </div>
+            <span class="zuno-pcard__price">{{ product.price|space_number }} <small>so'm</small></span>
         </div>
     </a>
+    <div class="zuno-pcard__actions">
+        {% if product.stock_quantity == 0 %}
+            <a class="st-btn st-btn--quiet" href="{% url 'product-detail' product.slug %}" aria-label="{{ product.title }} — batafsil">Batafsil</a>
+        {% else %}
+            <a class="st-btn st-btn--action" href="{% url 'product-detail' product.slug %}#buyurtma" aria-label="{{ product.title }} — buyurtma berish">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6L5 3H2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>
+                <span>Buyurtma berish</span>
+            </a>
+        {% endif %}
+    </div>
+    <span class="st-glare" aria-hidden="true"></span>
 </article>

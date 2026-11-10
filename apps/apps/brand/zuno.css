@@ -49,6 +49,15 @@
     --zuno-panel: #DCE4D8;           /* och yashil sirt */
     --zuno-panel-2: #CCD8C8;
 
+    /* Rang rollari (Material 3 tamoyili): primary = yashil (brend, asosiy amallar),
+       action = amber (faqat xaridorning xarid amali). Tugma fonidan keskin ajralib turadi. */
+    --zuno-primary-edge: #123F33;    /* 3D tugmaning pastki qirrasi */
+    --zuno-action: #F2B04A;
+    --zuno-action-hover: #F6BE63;
+    --zuno-action-edge: #B87A1F;
+    --zuno-on-action: #2A1C07;       /* kontrast ~9:1 */
+    --zuno-btn-edge: 4px;
+
     /* Eski nomlar: yuqoridagi tokenlarga bog'langan */
     --zuno-lime: var(--zuno-primary);
     --zuno-lime-hover: var(--zuno-primary-hover);
@@ -189,7 +198,7 @@
 .zuno-input:focus {
     outline: none;
     border-color: var(--zuno-ink);
-    box-shadow: 0 0 0 3px rgba(198, 255, 77, 0.6);
+    box-shadow: 0 0 0 3px var(--zuno-focus);
 }
 
 .zuno-input:disabled {
@@ -325,44 +334,59 @@
     margin-bottom: 18px;
 }
 
-/* Asosiy tugma (lime) — formalar uchun */
+/* Asosiy tugma — butun tizim (vitrina, kabinet, operator) uchun yagona shakl.
+   3D: pastki qirra (box-shadow) bosilganda tugma "botadi" — 160 ms, kutdirmaydi.
+   Bosish maydoni kamida 44px (WCAG 2.5.8 / Apple HIG). */
 .zuno-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     width: 100%;
-    height: 50px;
+    min-height: 48px;
     padding: 0 20px;
+    margin-bottom: var(--zuno-btn-edge);
     font: 700 15px/1 var(--zuno-font);
     color: var(--zuno-on-primary);
-    background: var(--zuno-lime);
+    background: var(--zuno-primary);
     border: 0;
-    border-radius: 10px;
+    border-radius: 12px;
+    box-shadow: 0 var(--zuno-btn-edge) 0 var(--zuno-primary-edge);
     cursor: pointer;
-    transition: transform .18s var(--zuno-ease), box-shadow .18s var(--zuno-ease), background-color .18s;
+    text-decoration: none;
+    transform: translateY(0);
+    transition: transform .16s var(--zuno-ease), box-shadow .16s var(--zuno-ease), background-color .2s, color .2s;
 }
 
 .zuno-btn:hover {
-    background: var(--zuno-lime-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 8px 18px -8px rgba(11, 12, 15, 0.45), 0 0 0 4px rgba(198, 255, 77, 0.18);
     color: var(--zuno-on-primary);
+    background: var(--zuno-primary-hover);
+    text-decoration: none;
 }
 
 .zuno-btn:active {
-    background: var(--zuno-lime-active);
-    transform: translateY(0);
-    box-shadow: none;
     color: var(--zuno-on-primary);
+    transform: translateY(var(--zuno-btn-edge));
+    box-shadow: 0 0 0 var(--zuno-primary-edge);
 }
+
+.zuno-btn:focus-visible { outline: 3px solid var(--zuno-focus); outline-offset: 3px; }
+
+/* Xarid amali: amber */
+.zuno-btn.st-btn--action, .zuno-btn--action {
+    color: var(--zuno-on-action);
+    background: var(--zuno-action);
+    box-shadow: 0 var(--zuno-btn-edge) 0 var(--zuno-action-edge);
+}
+.zuno-btn.st-btn--action:hover, .zuno-btn--action:hover { color: var(--zuno-on-action); background: var(--zuno-action-hover); }
+.zuno-btn.st-btn--action:active, .zuno-btn--action:active { box-shadow: 0 0 0 var(--zuno-action-edge); }
 
 .zuno-btn:disabled,
 .zuno-btn[aria-disabled="true"] {
     color: var(--zuno-muted);
     background: var(--zuno-border);
     transform: none;
-    box-shadow: none;
+    box-shadow: 0 var(--zuno-btn-edge) 0 var(--zuno-border-dark);
     cursor: not-allowed;
 }
 
@@ -610,7 +634,7 @@
    Do'kon: hero, bo'limlar, mahsulot kartasi, saralash, sahifalash, holatlar
    ========================================================================== */
 
-.zuno-btn--sm { width: auto; height: 42px; padding: 0 18px; font-size: 14px; }
+.zuno-btn--sm { width: auto; min-height: 42px; padding: 0 18px; font-size: 14px; --zuno-btn-edge: 3px; }
 .zuno-btn--auto { width: auto; }
 
 .zuno-btn.is-loading {
@@ -709,7 +733,7 @@
     transition: box-shadow .18s, border-color .18s;
 }
 
-.zuno-search:focus-within { box-shadow: 0 0 0 4px rgba(198, 255, 77, .55); }
+.zuno-search:focus-within { box-shadow: 0 0 0 4px var(--zuno-focus); }
 
 .zuno-search__icon {
     position: absolute;
@@ -1035,7 +1059,7 @@
     cursor: pointer;
 }
 
-.zuno-select select:focus { outline: none; border-color: var(--zuno-ink); box-shadow: 0 0 0 3px rgba(198, 255, 77, .6); }
+.zuno-select select:focus { outline: none; border-color: var(--zuno-ink); box-shadow: 0 0 0 3px var(--zuno-focus); }
 
 select.zuno-input {
     padding-right: 36px;

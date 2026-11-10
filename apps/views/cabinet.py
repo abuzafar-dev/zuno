@@ -139,6 +139,7 @@ class DeleteLinkView(View):
         return JsonResponse({'success': True})
 
 
+@method_decorator(login_required, name='dispatch')
 class CompetitionView(View):
     RESULTS_CACHE_TTL = 10 * 60
 

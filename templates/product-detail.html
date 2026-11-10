@@ -497,26 +497,17 @@
         }
     </style>
 
+    {% if product.category %}
+        {% url 'category_detail' product.category.slug as category_url %}
+        {% include "components/page_head.html" with code="03" eyebrow=product.category.title title=product.title crumb_url=category_url crumb_title=product.category.title %}
+    {% else %}
+        {% include "components/page_head.html" with code="03" eyebrow="Mahsulot" title=product.title %}
+    {% endif %}
     <div class="pd-page">
         <div class="container">
-            <nav class="pd-breadcrumbs">
-                <a href="/"><i class="icofont-ui-home"></i> Bosh sahifa</a>
-                <i class="icofont-thin-right"></i>
-                {% if product.category %}
-                    <a href="/category/{{ product.category.slug }}">{{ product.category.title }}</a>
-                    <i class="icofont-thin-right"></i>
-                {% endif %}
-                <span class="current">{{ product.title }}</span>
-            </nav>
-
-            <div class="pd-hero">
-                <h1>{{ product.title }}</h1>
-                <div class="pd-hero__meta">Qo'shilgan sana: {{ product.created_at|date:"d.m.Y" }}</div>
-            </div>
-
             <div class="row">
                 <div class="col-lg-7">
-                    <div class="pd-gallery">
+                    <div class="pd-gallery" data-tilt data-tilt-max="4">
                         <div class="pd-gallery__viewport">
                             <div class="product-showcase-carousel" id="productCarousel">
                                 {% if product.image %}
@@ -632,7 +623,7 @@
                                 <div><dt>Yetkazib berish</dt><dd>{% if product.delivery_price %}{{ product.delivery_price|space_number }} so'm{% else %}Bepul{% endif %}</dd></div>
                                 <div class="is-total"><dt>Jami to'lov</dt><dd data-total="sum">{{ first_total|space_number }} so'm</dd></div>
                             </dl>
-                            <button type="submit" class="zuno-btn" data-loading-text="Yuborilmoqda…">
+                            <button type="submit" class="zuno-btn st-btn--action" data-loading-text="Yuborilmoqda…">
                                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
                                 <span>Buyurtma berish</span>
                             </button>
@@ -699,35 +690,37 @@
         </div>
 
         {% if product.category %}
-            <div class="pd-more">
+            <!-- O'xshash mahsulotlar: vitrinadagi umumiy karta (components/product_card.html) -->
+            <section class="zuno-section zuno-section--tint">
                 <div class="container">
-                    <div class="pd-more__head">
-                        <h4>Boshqa mahsulotlar</h4>
-                        <a href="/category/{{ product.category.slug }}">Barchasi <i class="icofont-long-arrow-right"></i></a>
+                    <div class="zuno-section-head">
+                        <div>
+                            <p class="zuno-eyebrow"><span class="st-code">// 04</span> {{ product.category.title }}</p>
+                            <h2 class="zuno-section-title">Shu bo'limdan yana</h2>
+                        </div>
+                        <a href="{% url 'category_detail' product.category.slug %}" class="zuno-more">
+                            Barchasi
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                        </a>
                     </div>
-                    <div class="pd-more__grid">
-                        {% for item in product.category.products.all|slice:":5" %}
-                            {% if item.id != product.id %}
-                                <a href="{% url 'product-detail' item.slug %}" class="pd-card">
-                                    <div class="pd-card__img">
-                                        {% if item.image %}
-                                            <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
-                                        {% else %}
-                                            <i class="icofont-image pd-gallery__empty" style="font-size: 40px;"></i>
-                                        {% endif %}
-                                    </div>
-                                    <div class="pd-card__body">
-                                        <h3 class="pd-card__title">{{ item.title }}</h3>
-                                        <div class="pd-card__price">{{ item.price|space_number }} so'm</div>
-                                    </div>
-                                </a>
-                            {% endif %}
-                        {% endfor %}
+                    <div class="zuno-grid">
+                        {% for item in related %}{% include "components/product_card.html" with product=item %}{% endfor %}
                     </div>
                 </div>
-            </div>
+            </section>
         {% endif %}
     </div>
+
+    {% if product.stock_quantity %}
+        <!-- Telefonda doim ko'rinadigan xarid paneli: forma ekranga chiqqanda yashirinadi (stage.js) -->
+        <div class="st-buybar" data-buybar hidden>
+            <div class="st-buybar__info">
+                <span class="st-buybar__title">{{ product.title }}</span>
+                <span class="st-buybar__price">{{ unit_price|space_number }} <small>so'm</small></span>
+            </div>
+            <a class="st-btn st-btn--action" href="#buyurtma">Buyurtma berish</a>
+        </div>
+    {% endif %}
 
     <script>
         (function () {

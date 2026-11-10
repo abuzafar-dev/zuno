@@ -547,6 +547,13 @@ class RobustInputTests(TestCase):
                                            "next": "https://evil.example/"})
         self.assertEqual(response["Location"], "/admin_page/orders/new/")
 
+    def test_cabinet_pages_redirect_anonymous_instead_of_500(self):
+        client = Client()
+        for url in ("/admin_page/", "/admin_page/competition/", "/admin_page/withdraw/", "/profile/referral/"):
+            response = client.get(url)
+            self.assertEqual(response.status_code, 302, url)
+            self.assertIn("next=", response["Location"], url)
+
     def test_slug_collisions_get_unique_values(self):
         first = Product.objects.create(title="Bir xil", price=1)
         second = Product.objects.create(title="Bir xil", price=1)

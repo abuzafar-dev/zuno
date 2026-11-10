@@ -3,9 +3,8 @@
 {% block title %}Buyurtmani kuzatish — ZUNO{% endblock %}
 
 {% block body %}
-<main class="zuno-page">
-    <h1>Buyurtmani kuzatish</h1>
-    <p class="zuno-page__lead">Buyurtma raqami va buyurtma berilgan telefon raqamini kiriting.</p>
+{% include "components/page_head.html" with code="04" eyebrow="Xizmat" title="Buyurtmani kuzatish" lead="Buyurtma raqami va buyurtma berilgan telefon raqamini kiriting." %}
+<main class="zuno-page st-page">
 
     <div class="zuno-card">
         {% if error %}<div class="zuno-alert zuno-alert--danger" role="alert">{{ error }}</div>{% endif %}

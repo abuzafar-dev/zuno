@@ -115,7 +115,12 @@ class CategoryDetailView(View):
 
 def _product_page_context(product, funnel=None):
     unit_price = order_service.unit_price(product, funnel)
+    related = []
+    if product.category_id:
+        related = (Product.objects.filter(category_id=product.category_id).exclude(pk=product.pk)
+                   .select_related('category').order_by('-id')[:4])
     return {
+        'related': related,
         'funnel': funnel,
         'product': product,
         'unit_price': unit_price,
