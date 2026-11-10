@@ -23,7 +23,7 @@
 {% if products %}
 <div class="ui-prods">
     {% for product in products %}
-        <article class="ui-prod">
+        <article class="ui-prod" data-tilt>
             <a class="ui-prod__media" href="{% url 'product-detail' product.slug %}" target="_blank" rel="noopener">
                 {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.title }}" loading="lazy">{% else %}<img src="{% static 'apps/brand/product-placeholder.svg' %}" alt="">{% endif %}
             </a>
@@ -36,6 +36,7 @@
                     <i class="icofont-link" aria-hidden="true"></i> Oqim yaratish
                 </button>
             </div>
+            <span class="st-glare" aria-hidden="true"></span>
         </article>
     {% endfor %}
 </div>

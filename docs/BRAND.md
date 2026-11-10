@@ -41,6 +41,7 @@ va `zuno-og.svg` dan yaratilgan; SVG o'zgarsa, PNG'larni qayta eksport qiling.
 | `--zuno-text` | `#24271F` | Asosiy matn |
 | `--zuno-muted` | `#5B6158` | Yordamchi matn |
 | `--zuno-border` | `#D8D5CA` | Chegaralar |
+| `--zuno-action` | `#F2B04A` | Faqat savdo tugmalari (Buyurtma berish, Katalog, hero qidiruv). Matn `--zuno-on-action` `#2A1C07`, kontrast ~9:1 |
 
 Yangi sahifa uchun `apps/brand/ui.css` komponentlaridan foydalaning (`ui-card`, `ui-stat`, `ui-table`, `ui-chip`, `ui-badge`) va kabinet sahifalarini `base/cabinet.html` dan meros oling. Sahifaga alohida rang yoki soya yozilmaydi.
 
@@ -48,6 +49,13 @@ Qoidalar:
 
 - Oppoq fon va neon ranglar ishlatilmaydi. Matn kontrasti kamida 4.5:1 bo'lishi kerak.
 - Holat ranglari semantik: har biri matn va yumshoq fon jufti.
+- Rang rollari Material 3 tamoyili bo'yicha: qarag'ay yashil (primary) — brend, navigatsiya va holatlar;
+  amber (action/tertiary) — faqat pul bilan bog'liq asosiy amal. Tugma fonidan keskin ajralib turishi
+  shart (kontrast hue'dan muhimroq). Boshqa joyda amber ishlatilmaydi.
+- Tugmalar butun tizimda bitta shaklda (`zuno.css` → `.zuno-btn`, operator panelida `.btn-primary`/`.btn-ghost`,
+  vitrinada qo'shimcha `.st-btn--action/--quiet/--glass`): radius 12px, bosish maydoni kamida 44px,
+  pastki 3D qirra bosilganda 160 ms "botadi". Qorong'i panelda asosiy tugma och rangda bo'ladi.
+- Harakat (3D halqa, karta egilishi, canvas fon) `prefers-reduced-motion` da o'chadi.
 
 ## Domen ko'chirish ro'yxati (tasdiq talab qilinadi)
 
@@ -68,3 +76,18 @@ shart emas. Ishlab chiqarishga o'tishdan oldin:
 9. Email (SPF/DKIM/DMARC) — hozircha email yuborilmaydi.
 10. `robots.txt` va `sitemap.xml` avtomatik: joriy domenni o'zi oladi.
 11. Google Search Console / Yandex Webmaster'da yangi domenni tasdiqlash va manzil o'zgarishini bildirish.
+
+## Sahifa tuzilishi (yagona tizim)
+
+| Qism | Qayerda | Fayl |
+|---|---|---|
+| Hero sahna + 3D kartalar to'plami | Bosh sahifa | `bosh-sahifa.html`, `stage.css/js` (`[data-deck]`) |
+| Sahifa sarlavhasi (qarag'ay bo'lak, mono indeks, yo'l) | Katalog, kategoriya, qidiruv, mahsulot, kuzatish, shartlar | `components/page_head.html` |
+| Kabinet sarlavhasi (xuddi shu sahna-panel) | Barcha kabinet sahifalari | `.cab-head` (`stage.css`) |
+| Mahsulot kartasi (3D egilish, alohida xarid tugmasi) | Vitrina, qidiruv, "Shu bo'limdan yana" | `components/product_card.html` |
+| Market kartasi (xuddi shu 3D xatti-harakat) | Kabinet → Market | `market.html` (`.ui-prod[data-tilt]`) |
+| Telefonda doim ko'rinadigan xarid paneli | Mahsulot sahifasi | `[data-buybar]` |
+
+Mono indekslar: `// 00` bosh sahifa, `// 01–02` bosh sahifa bo'limlari, `// 02` katalog, `// 03` mahsulot,
+`// 04` kuzatish, `// 05` shartlar. Yangi vitrina sahifasi `page_head` bilan boshlanadi.
+

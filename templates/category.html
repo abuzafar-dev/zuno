@@ -230,7 +230,12 @@
         }
     }
 </style>
-    <section class="products-listing-page py-4" style="margin-top: 24px;">
+    {% if category %}
+        {% include "components/page_head.html" with code="02" eyebrow="Kategoriya" title=category.title crumb_url="/category/" crumb_title="Katalog" meta=products.paginator.count|stringformat:"d"|add:" ta mahsulot" %}
+    {% else %}
+        {% include "components/page_head.html" with code="02" eyebrow="Katalog" title="Barcha mahsulotlar" lead="Yangi, arzon yoki qimmat — saralab, kategoriya bo'yicha tanlang." meta=products.paginator.count|stringformat:"d"|add:" ta mahsulot" %}
+    {% endif %}
+    <section class="products-listing-page py-4">
         <div class="container">
             <div class="row g-4">
                 <!-- Sidebar Categories -->
@@ -271,37 +276,6 @@
 
                 <!-- Main Content -->
                 <div class="col-lg-9">
-                    <!-- Breadcrumb & Title -->
-                    <div class="page-header mb-4">
-                        <div class="breadcrumb-wrapper">
-                            <a href="/" class="breadcrumb-link">
-                                <i class="icofont-home"></i>
-                                Bosh sahifa
-                            </a>
-                            <span class="breadcrumb-separator">
-                                <i class="icofont-thin-right"></i>
-                            </span>
-
-                            <span class="breadcrumb-current">
-                            {% if category %}
-                                {{ category.title }}
-                            {% else %}
-                                Barchasi
-                            {% endif %}
-                            </span>
-
-                        </div>
-
-                        <h1 class="page-title">
-                            {% if category %}
-                                {{ category.title }}
-                            {% else %}
-                                Barcha mahsulotlar
-                            {% endif %}
-
-                        </h1>
-                    </div>
-
                     <!-- Natijalar soni va saralash (?sort=, sahifalashda saqlanadi) -->
                     <form class="zuno-toolbar" method="get" data-autosubmit>
                         <p class="zuno-toolbar__count" role="status">{{ products.paginator.count }} ta mahsulot</p>

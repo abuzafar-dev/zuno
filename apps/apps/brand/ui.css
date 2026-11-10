@@ -121,8 +121,9 @@ h1, h2, h3, h4, h5, h6 { color: var(--zuno-text); font-family: var(--zuno-font);
 /* ---------- Tugma variantlari ---------- */
 .zuno-btn { text-decoration: none; }
 .zuno-btn:hover { color: var(--zuno-on-primary); text-decoration: none; }
-.zuno-btn--secondary { background: var(--zuno-card); color: var(--zuno-text); box-shadow: inset 0 0 0 1px var(--zuno-border-dark); }
-.zuno-btn--secondary:hover { background: var(--zuno-panel); color: var(--zuno-text); box-shadow: inset 0 0 0 1px var(--zuno-border-dark); }
+.zuno-btn--secondary { background: var(--zuno-card); color: var(--zuno-text); box-shadow: inset 0 0 0 1px var(--zuno-border-dark), 0 var(--zuno-btn-edge) 0 var(--zuno-border-dark); }
+.zuno-btn--secondary:hover { background: var(--zuno-panel); color: var(--zuno-text); }
+.zuno-btn--secondary:active { color: var(--zuno-text); box-shadow: inset 0 0 0 1px var(--zuno-border-dark), 0 0 0 var(--zuno-border-dark); }
 
 /* ---------- Kabinet qobig'i ---------- */
 .cab {

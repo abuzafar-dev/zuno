@@ -1,10 +1,14 @@
 {% extends 'base/base.html' %}
 {% block title %}Sahifa topilmadi — ZUNO{% endblock %}
 {% block body %}
-<main class="zuno-error">
-    <div class="zuno-error__code">404</div>
+<main class="zuno-error st-error">
+    <div class="zuno-error__code" aria-hidden="true">404</div>
+    <p class="st-code">// sahifa_topilmadi</p>
     <h1>Sahifa topilmadi</h1>
     <p>Havola eskirgan yoki manzilda xato bo'lishi mumkin.</p>
-    <a class="zuno-btn zuno-btn--auto" href="{% url 'shop' %}">Katalogga o'tish</a>
+    <div class="st-error__actions">
+        <a class="st-btn st-btn--action st-btn--lg" href="{% url 'shop' %}"><span>Katalogga o'tish</span></a>
+        <a class="st-btn st-btn--glass st-btn--lg" href="/"><span>Bosh sahifa</span></a>
+    </div>
 </main>
 {% endblock %}

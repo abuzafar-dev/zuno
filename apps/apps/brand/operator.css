@@ -9,7 +9,7 @@
     /* ZUNO tokenlari: apps/brand/zuno.css */
     --brand: var(--zuno-primary);
     --brand-2: var(--zuno-primary-hover);
-    --brand-soft: rgba(198, 255, 77, 0.35);
+    --brand-soft: var(--zuno-focus);
 
     --bg: var(--zuno-page);
     --surface: #ffffff;
@@ -503,19 +503,29 @@ table {
     transform: translateY(1px);
 }
 
+/* Vitrina va kabinet bilan bir xil: yashil asosiy tugma, 3D qirra */
 .btn-primary {
-    background: var(--zuno-lime);
+    background: var(--zuno-primary);
     color: var(--zuno-on-primary);
+    box-shadow: 0 3px 0 var(--zuno-primary-edge);
+}
+
+.btn-primary:active,
+.btn-ghost:active,
+.btn-white:active {
+    transform: translateY(3px);
+    box-shadow: none;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #5a6fd8 0%, #6a4292 100%);
-    box-shadow: 0 8px 20px rgba(11, 12, 15, 0.16);
+    background: var(--zuno-primary-hover);
+    color: var(--zuno-on-primary);
 }
 
 .btn-ghost {
     border-color: var(--line);
     background: var(--zuno-card);
+    box-shadow: 0 3px 0 var(--zuno-border-dark);
 }
 
 .btn-ghost:hover {

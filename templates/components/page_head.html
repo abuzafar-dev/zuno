@@ -1,0 +1,30 @@
+{% comment %}
+Yagona sahifa sarlavhasi (vitrina sahifalari). Bosh sahifa hero'sining davomi:
+qarag'ay fon, nuqtali to'r, mono indeks va sahifa yo'li (breadcrumb).
+
+Parametrlar:
+  code       — mono indeks, masalan "02"           (ixtiyoriy)
+  eyebrow    — kichik yorliq, masalan "Katalog"   (ixtiyoriy)
+  title      — sarlavha (h1)                       (majburiy)
+  lead       — qisqa izoh                          (ixtiyoriy)
+  crumb_url, crumb_title — oraliq bo'g'in          (ixtiyoriy)
+  meta       — o'ng tomondagi mono ma'lumot        (ixtiyoriy)
+
+{% include "components/page_head.html" with code="02" eyebrow="Katalog" title="Mebel" lead="4 ta mahsulot" crumb_url="/category/" crumb_title="Katalog" %}
+{% endcomment %}<section class="st-pagehead">
+    <div class="container st-pagehead__inner">
+        <nav class="st-crumbs" aria-label="Sahifa yo'li">
+            <a href="/">Bosh sahifa</a>
+            {% if crumb_url %}<span aria-hidden="true">/</span><a href="{{ crumb_url }}">{{ crumb_title }}</a>{% endif %}
+            <span aria-hidden="true">/</span><span aria-current="page">{{ title }}</span>
+        </nav>
+        <div class="st-pagehead__row">
+            <div>
+                {% if eyebrow %}<p class="st-pagehead__eyebrow">{% if code %}<span class="st-code">// {{ code }}</span>{% endif %}{{ eyebrow }}</p>{% endif %}
+                <h1 class="st-pagehead__title">{{ title }}</h1>
+                {% if lead %}<p class="st-pagehead__lead">{{ lead }}</p>{% endif %}
+            </div>
+            {% if meta %}<span class="st-pagehead__meta">{{ meta }}</span>{% endif %}
+        </div>
+    </div>
+</section>

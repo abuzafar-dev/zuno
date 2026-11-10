@@ -39,10 +39,10 @@
 @keyframes mo-ticker { to { transform: translateX(-50%); } }
 
 /* Bosilganda javob beradigan tugmalar */
-.zuno-btn, .product-btn, .action-btn, .btn, .op-btn, .tab-btn {
+.product-btn, .action-btn, .op-btn, .tab-btn {
     transition: transform .16s var(--mo-ease), box-shadow .2s, background-color .2s, filter .2s;
 }
-.zuno-btn:active, .product-btn:active, .action-btn:active, .btn:active, .op-btn:active { transform: scale(.96); }
+.product-btn:active, .action-btn:active, .op-btn:active { transform: scale(.96); }
 
 .pd-order .zuno-btn { position: relative; overflow: hidden; }
 .pd-order .zuno-btn::after {
@@ -105,7 +105,6 @@
     .zuno-pcard__link:hover { transform: translateY(-6px); box-shadow: var(--zuno-shadow-lg); border-color: var(--zuno-primary); }
     .zuno-pcard__link:hover .zuno-pcard__media img { transform: scale(1.07); }
     .zuno-pcard__link:hover .zuno-pcard__go { background: var(--zuno-primary); color: var(--zuno-on-primary); transform: translateX(3px); }
-    .zuno-btn:hover { box-shadow: 0 6px 16px rgba(28, 58, 49, .22); transform: translateY(-1px); }
     .pd-gallery img, .product-slide img { transition: transform .45s var(--mo-ease); }
     .product-slide:hover img { transform: scale(1.05); }
     .op-table tbody tr, tbody tr { transition: background-color .15s; }
